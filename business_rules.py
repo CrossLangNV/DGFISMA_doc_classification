@@ -11,10 +11,35 @@ def parse_files(path):
         if check_rejected(pydict):
             pass
 
+'''
+Directory codes:
+062020  = Right of establishment and freedom to provide services / Sectoral application
+160     = General, financial and institutional matters / Financial and budgetary provisions
+1040    = Economic and monetary policy and free movement of capital / Free movement of capital
+1030    = Economic and monetary policy and free movement of capital / Economic policy
+
+Eurovoc descriptors:
+4838    = European Investment Bank
+5455    = European Central Bank
+5460	= European Bank for Reconstruction and Development
+5465    = Money laundering
+8434    = Counterfeiting
+
+Subject matter:
+BEI     = European Investment Bank
+BCE     = European Central Bank
+
+Summary codes:
+1409    = Economic and monetary affairs / Banking and financial services
+2414    = Internal market / Banking and finance
+240403  = Internal market / Single market for services / Financial services: insurance
+
+'''
 def check_accepted(dictionary):
-    accepted_dircodes = ['062020', '0160', '1040', '1030']
-    accepted_eurovoc = ['4838']
+    accepted_directory_codes = ['062020', '0160', '1040', '1030']
+    accepted_eurovoc_descriptors = ['4838', '5455', '5460', '5465', '8434']
     accepted_subject_matter = ['BEI', 'BCE']
+    accepted_summary_codes = ['1409', '2414', '240403']
 
     if 'misc_author' in dictionary:
         if 'Directorate-General for Financial Stability, Financial Services and Capital Markets Union' in dictionary['misc_author']:
@@ -25,13 +50,21 @@ def check_accepted(dictionary):
             return True
 
     elif 'classifications_type' in dictionary and 'classifications_code' in dictionary:
-        if isaccepted_code(dictionary, 'directory code', accepted_dircodes):
+        if isaccepted_code(dictionary, 'directory code', accepted_directory_codes):
             return True
-        elif isaccepted_code(dictionary, 'eurovoc descriptor', accepted_eurovoc):
+        elif isaccepted_code(dictionary, 'eurovoc descriptor', accepted_eurovoc_descriptors):
             return True
         elif isaccepted_code(dictionary, 'subject matter', accepted_subject_matter):
-            print(dictionary['classifications_code'])
+            return True
+        elif isaccepted_code(dictionary, 'summary code', accepted_summary_codes):
+            return True
 
+'''
+Directory codes:
+08      = Competition policy
+09      = Taxation
+117020  = External relations / Development policy / Aid to developing countries
+'''
 def check_rejected(dictionary):
     rejected_dircodes = ['08', '117020', '09']
     rejected_eurovoc = []
@@ -57,7 +90,7 @@ def isaccepted_code(dictionary, classification_type, accepted_codes):
 if __name__ == "__main__":
     odir = '/home/sandervanbeers/Desktop/DGFISMA/DATA_DUMP_13_08_ALL/EURLEX'
     all_files = [os.path.join(odir, filename) for filename in os.listdir(odir)]
-    pool = Pool()                 # Create a multiprocessing Pool
+    pool = Pool()                     # Create a multiprocessing Pool
     pool.map(parse_files, all_files)  # process files iterable with pool
     pool.close()
     pool.join()
