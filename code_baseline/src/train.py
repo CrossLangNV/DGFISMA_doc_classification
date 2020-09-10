@@ -49,6 +49,8 @@ if __name__ == "__main__":
                         help="Solve the dual or primal optimization problem. Prefer dual=False when n_samples > n_features (i.e. when doing feature selection beforehand)", required=False)
     parser.add_argument( "--remove_punctuation_numbers", dest="remove_punctuation_numbers", action='store_true' ,default=False,
                         help="Whether to remove punctuation and numbers from the training data.", required=False  )
+    parser.add_argument( "--balanced", dest="balanced", action="store_true", default=False,
+                        help="The “balanced” mode automatically adjusts weights inversely proportional to class frequencies in the input data.", required=False)
     args = parser.parse_args()
     
     
@@ -108,7 +110,13 @@ if __name__ == "__main__":
     else:
         feature_selection=None
 
-    classifier=LinearSVC(penalty=args.penalty, loss=args.loss , dual=args.dual )
+    if args.balanced:
+        print("Using balanced class weights.")
+        class_weight = 'balanced'
+    else:
+        class_weight = None
+
+    classifier=LinearSVC(penalty=args.penalty, loss=args.loss , dual=args.dual, class_weight=class_weight )
     #calibrated the classifier (for predict_proba): 
     calibrated_classifier = CalibratedClassifierCV(classifier , cv=5 ) 
     
