@@ -18,6 +18,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.svm import LinearSVC
 from sklearn import metrics
 from sklearn.calibration import CalibratedClassifierCV
+from sklearn.model_selection import cross_val_score
 
 def size_mb(docs):
     return sum(len(s.encode('utf-8')) for s in docs) / 1e6
@@ -128,8 +129,8 @@ if __name__ == "__main__":
     ])
 
     clf.fit(  train_data , train_labels )
-    
-    
+    scores = cross_val_score(clf, train_data, train_labels, cv=5, scoring='f1')
+    print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
     #show the selected features (i.e. keywords used for classification):
     
     if args.feature_selection_svc and not args.n_select_chi2:
