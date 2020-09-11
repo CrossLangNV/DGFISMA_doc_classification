@@ -64,16 +64,20 @@ Directory codes:
 08      = Competition policy
 09      = Taxation
 117020  = External relations / Development policy / Aid to developing countries
+
+Eurovoc descriptors:
+889     = State aid
+
 '''
 def check_rejected(dictionary):
-    rejected_dircodes = ['08', '117020', '09']
-    rejected_eurovoc = []
+    rejected_directory_codes = ['08', '117020', '09']
+    rejected_eurovoc_descriptors = ['889']
     rejected_subject_matter = []
 
     if 'classifications_type' in dictionary and 'classifications_code' in dictionary:
-        if isaccepted_code(dictionary, 'directory code', rejected_dircodes):
+        if isaccepted_code(dictionary, 'directory code', rejected_directory_codes):
             return True
-        elif isaccepted_code(dictionary, 'eurovoc descriptor', rejected_eurovoc):
+        elif isaccepted_code(dictionary, 'eurovoc descriptor', rejected_eurovoc_descriptors):
             return True
         elif isaccepted_code(dictionary, 'subject matter', rejected_subject_matter):
             return True
