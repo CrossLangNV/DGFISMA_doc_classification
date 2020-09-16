@@ -9,6 +9,7 @@ from time import time
 import pandas as pd
 import pickle
 import string
+import json
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import HashingVectorizer
@@ -18,7 +19,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.svm import LinearSVC
 from sklearn import metrics
 from sklearn.calibration import CalibratedClassifierCV
-from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import cross_validate
 
 def size_mb(docs):
     return sum(len(s.encode('utf-8')) for s in docs) / 1e6
@@ -129,8 +130,26 @@ if __name__ == "__main__":
     ])
 
     clf.fit(  train_data , train_labels )
-    scores = cross_val_score(clf, train_data, train_labels, cv=5, scoring='f1')
-    print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+    scoring = ['f1', 'precision', 'recall']
+    scores = cross_validate(clf, train_data, train_labels, cv=5, scoring=scoring, return_train_score=True)
+    scores_dict = {
+        'mean_train_f1': scores['train_f1'].mean(),
+        'std_train_f1': scores['train_f1'].std() * 2,
+        'mean_test_f1': scores['test_f1'].mean(),
+        'std_test_f1': scores['test_f1'].std() * 2,
+        'mean_train_precision': scores['train_precision'].mean(),
+        'std_train_precision': scores['train_precision'].std() * 2,
+        'mean_test_precision': scores['test_precision'].mean(),
+        'std_test_precision': scores['test_precision'].std() * 2,
+        'mean_train_recall': scores['train_recall'].mean(),
+        'std_train_recall': scores['train_recall'].std() * 2,
+        'mean_test_recall': scores['test_recall'].mean(),
+        'std_test_recall': scores['test_recall'].std() * 2,
+        'mean_fit_time': scores['fit_time'].mean(),
+        'std_fit_time':  scores['fit_time'].std() * 2
+    }
+    json.dump(scores_dict, open( os.path.join( args.output_dir, "cross_validation_scores.json"  ), "w" ))
+
     #show the selected features (i.e. keywords used for classification):
     
     if args.feature_selection_svc and not args.n_select_chi2:
