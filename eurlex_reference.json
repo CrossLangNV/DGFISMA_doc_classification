@@ -1,0 +1,202 @@
+{
+   "celex":[
+      "31977L0098"
+   ],
+   "title":[
+      "Council Directive 77/98/EEC of 21 December 1976 amending Directives 64/432/EEC, 72/461/EEC and 72/462/EEC on health and veterinary problems"
+   ],
+   "status":[
+      "In force"
+   ],
+   "eli":[
+      "http://data.europa.eu/eli/dir/1977/98/oj"
+   ],
+   "various":[
+      "OJ L 26, 31.1.1977, p. 81–84 (DA, DE, EN, FR, IT, NL)Greek special edition: Chapter 03 Volume 017 P. 56  - 59Spanish special edition: Chapter 03 Volume 011 P. 170  - 173Portuguese special edition: Chapter 03 Volume 011 P. 170  - 173Special edition in Finnish: Chapter 03 Volume 008 P. 52  - 55Special edition in Swedish: Chapter 03 Volume 008 P. 52  - 55Special edition in Czech: Chapter 03 Volume 003 P. 78  - 81Special edition in Estonian: Chapter 03 Volume 003 P. 78  - 81Special edition in Latvian: Chapter 03 Volume 003 P. 78  - 81Special edition in Lithuanian: Chapter 03 Volume 003 P. 78  - 81Special edition in Hungarian Chapter 03 Volume 003 P. 78  - 81Special edition in Maltese: Chapter 03 Volume 003 P. 78  - 81Special edition in Polish: Chapter 03 Volume 003 P. 78  - 81Special edition in Slovak: Chapter 03 Volume 003 P. 78  - 81Special edition in Slovene: Chapter 03 Volume 003 P. 78  - 81Special edition in Bulgarian: Chapter 03 Volume 002 P. 175  - 178Special edition in Romanian: Chapter 03 Volume 002 P. 175  - 178Special edition in Croatian: Chapter 03 Volume 032 P. 3  - 6                 Official Journal L 026 , 31/01/1977 P. 0081 - 0084 Finnish special edition: Chapter 3 Volume 8 P. 0052  Greek special edition: Chapter 03 Volume 17 P. 0056  Swedish special edition: Chapter 3 Volume 8 P. 0052  Spanish special edition: Chapter 03 Volume 11 P. 0170  Portuguese special edition Chapter 03 Volume 11 P. 0170"
+   ],
+   "date":[
+      "1976-12-21T00:00:00Z"
+   ],
+   "dates":[
+      "1976-12-21T00:00:00Z",
+      "1976-12-23T00:00:00Z",
+      "1977-01-01T00:00:00Z",
+      "1978-01-01T00:00:00Z",
+      "1976-12-23T00:00:00Z",
+      "1977-01-01T00:00:00Z",
+      "1978-01-01T00:00:00Z",
+      "2021-04-20T00:00:00Z"
+   ],
+   "dates_type":[
+      "date of document",
+      "date of effect",
+      "date of effect",
+      "date of effect",
+      "date of notification",
+      "date of transposition",
+      "date of transposition",
+      "date of end of validity"
+   ],
+   "dates_info":[
+      "n/a",
+      "Entry into force                    Date notif.",
+      "Application                    Art 1 See Art 1",
+      "Application                    Art 3 5 And 6 See Art 3 5 And 6",
+      "n/a",
+      "See Art 7",
+      "See Art 7",
+      "Implicitly repealed by 32016R0429"
+   ],
+   "classifications_label":[
+      "veterinary inspection",
+      "Ireland",
+      "health control",
+      "swine",
+      "import (EU)",
+      "Denmark",
+      "United Kingdom",
+      "cattle",
+      "Veterinary legislation",
+      "Approximation of laws",
+      "Agriculture",
+      "Approximation of laws and health measures",
+      "Animal health and zootechnics"
+   ],
+   "classifications_type":[
+      "eurovoc descriptor",
+      "eurovoc descriptor",
+      "eurovoc descriptor",
+      "eurovoc descriptor",
+      "eurovoc descriptor",
+      "eurovoc descriptor",
+      "eurovoc descriptor",
+      "eurovoc descriptor",
+      "subject matter",
+      "subject matter",
+      "directory code",
+      "directory code",
+      "directory code"
+   ],
+   "classifications_code":[
+      "1445",
+      "1504",
+      "192",
+      "2560",
+      "3191",
+      "336",
+      "3774",
+      "5034",
+      "VETE",
+      "RAPL",
+      "03",
+      "0350",
+      "035030"
+   ],
+   "misc_author":[
+      "Council of the European Union"
+   ],
+   "misc_department_responsible":[
+      "DG06/B/II/2"
+   ],
+   "type":[
+      "Directive"
+   ],
+   "misc_form":[
+      "Directive"
+   ],
+   "misc_addressee":[
+      "The nine Member States: Belgium, Denmark, Germany, Ireland, France, Italy, Luxembourg, Netherlands, United Kingdom"
+   ],
+   "misc_additional_information":[
+      "Extended to the EEA by 21994A0103(01), Directive amending"
+   ],
+   "procedures_number":[
+      "128728"
+   ],
+   "relationships_treaty":[
+      "Treaty establishing the European Economic Community"
+   ],
+   "relationships_oj_link":[
+      "https://eur-lex.europa.eu/legal-content/AUTO/?uri=OJ:L:1977:026:TOC"
+   ],
+   "relationships_legal_basis":[
+      "11957E043",
+      "11957E100"
+   ],
+   "amendments_relation":[
+      "Amendment",
+      "Amendment",
+      "Amendment",
+      "Amendment",
+      "Amendment",
+      "Amendment",
+      "Amendment",
+      "Corrected by"
+   ],
+   "amendments_act":[
+      "31964L0432",
+      "31964L0432",
+      "31964L0432",
+      "31964L0432",
+      "31972L0461",
+      "31972L0462",
+      "31972L0462",
+      "31977L0098R(01)"
+   ],
+   "amendments_comment":[
+      "Addition",
+      "Addition",
+      "Amendment",
+      "abolition",
+      "Replacement",
+      "Replacement",
+      "Completion",
+      "n/a"
+   ],
+   "amendments_subdivision":[
+      "article 4BIS",
+      "article 4TER",
+      "article 7.1",
+      "article 7.1.A.B",
+      "article 13",
+      "article 33",
+      "article 8.2",
+      "n/a"
+   ],
+   "amendments_from":[
+      "1976-12-23T00:00:00Z",
+      "1978-01-01T00:00:00Z",
+      "1976-12-23T00:00:00Z",
+      "1976-12-23T00:00:00Z",
+      "1977-01-01T00:00:00Z",
+      "1978-01-01T00:00:00Z",
+      "1978-01-01T00:00:00Z"
+   ],
+   "consolidated_versions":[
+      "01977L0098-19761223"
+   ],
+   "url":[
+      "https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX:31977L0098"
+   ],
+   "task":[
+      "d6196fb1-a6c2-4026-91e2-d258583be19b"
+   ],
+   "id":"6aa33bf9-2212-52ee-9b15-8b4c0f68691c",
+   "website":[
+      "eurlex"
+   ],
+   "date_last_update":"2020-08-21T20:09:29Z",
+   "content":[
+      "\n\n\n\n\n\n\n\n\t\t\t\t\t\n\t\t\t\t\t\n\t\n\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t        \t\n\t\t\t\t\t\t\t        \t\t\n\n\n\n\nAvis juridique important\n\n\n\n\n\n\n\n|\n\n\n\n\n\n31977L0098\n\n\nCouncil Directive 77/98/EEC of 21 December 1976 amending Directives 64/432/EEC, 72/461/EEC and 72/462/EEC on health and veterinary problems  \n\n\n\n\nOfficial Journal L 026 , 31/01/1977 P. 0081 - 0084\n Finnish special edition: Chapter 3 Volume 8 P. 0052 \n Greek special edition: Chapter 03 Volume 17 P. 0056 \n Swedish special edition: Chapter 3 Volume 8 P. 0052 \n Spanish special edition: Chapter 03 Volume 11 P. 0170 \n Portuguese special edition Chapter 03 Volume 11 P. 0170 \n \n\n\n\n\n\n\n\n\nCOUNCIL DIRECTIVE  of 21 December 1976  amending Directives 64/432/EEC, 72/461/EEC and 72/462/EEC on health and veterinary problems  (77/98/EEC)\n  THE COUNCIL OF THE EUROPEAN COMMUNITIES, \n Having regard to the Treaty establishing the European Economic Community, and in particular Articles 43 and 100 thereof, \n Having regard to the proposal from the Commission, \n Having regard to the opinion of the European Parliament (1), \n Having regard to the opinion of the Economic and Social Committee (2), \n Whereas, on the occasion of the enlargement of the Community, Denmark, Ireland and the United Kingdom were authorized, by way of derogation from the existing Community Regulations, to retain to some extent their national rules relating to veterinary matters; \n Whereas the special arrangements applying to these three Member States were incorporated into the provisions of Articles 104 and 105 of the Act of Accession (3) ; whereas similar provisions, which were the logical extension of the original provisions have been introduced in Council Acts subsequently adopted ; whereas Article 13 of Council Directive 72/461/EEC of 12 December 1972 on health problems affecting intra-Community trade in fresh meat (4) and Article 33 of Council Directive 72/462/EEC of 12 December 1972 on health and veterinary inspection problems upon importation of bovine animals and swine and fresh meat from third countries (5) were adopted to this end, the two aforementioned Directives having been last amended by Directive 75/379/EEC (6); \n Whereas Article 106 of the Act of Accession and the other abovementioned provisions laid down that the Commission should submit to the Council, by 1 July 1976 at the latest, a report, and in so far as is necessary appropriate proposals, with a view to finding a solution to the problem of these derogations; \n Whereas the solutions adopted must not be such as to compromise the health standard already attained and must ensure, as far as possible, the free movement of animals and meat; \n Whereas, as far as fresh beef and veal is concerned, the risk of spreading disease is undeniably less than is involved in trade in live animals ; whereas, in addition, the conditions governing trade in meat under existing Directives are such that further special guarantees are unneccessary; \n Whereas, as far as live animals are concerned, a system common to all the Member States should gradually be introduced, making a distinction between the various types of animals according to the danger they represent and taking into account the need to expand trade on the basis of existing patterns ; whereas appropriate amendments should be made to Council Directive 64/432/EEC of 26 June 1964 on animal health problems affecting intra-Community trade in bovine animals and swine (7), as last amended by Directive 75/379/EEC; \n Whereas it must be possible for imports into certain Member States from third countries to remain subject to arrangements which are at least as strict as those currently applied in those Member States; \n Whereas the Community Regulations relating, in particular, to foot-and-mouth disease and swine fever should make it possible to find a common and complete solution for all these problems; \n Whereas it would be justified to make provision for a special transitional period for Ireland and the United  (1)OJ No C 6, 10.1.1977, p. 141. (2)Opinion delivered on 27 October 1976 (not yet published in the Official Journal). (3)OJ No L 73, 27.3.1972, p. 14. (4)OJ No L 302, 31.12.1972, p. 24. (5)OJ No L 302, 31.12.1972, p. 28. (6)OJ No L 172, 3.7.1975, p. 17. (7)OJ No 121, 29.7.1964, p. 1977/64.  \n Kingdom in respect of Northern Ireland, which would enable the said countries to effect the amendments necessitated by the implementation of Community Regulations; \n Whereas it seems appropriate, in the light of experience acquired, to extend the use of a rapid and effective procedure for making technical changes to certain provisions or for establishing rules of implementation, \n HAS ADOPTED THIS DIRECTIVE:\n \n   Article 1\n From 1 January 1977, the text of Article 13 of Directive 72/461/EEC shall be replaced by the following: \n \"Article 13 \n Until 31 December 1982, Ireland and the United Kingdom in respect of Northern Ireland, shall be authorized to retain for imports of fresh meat, their national rules relating to protection against foot-and-mouth disease while complying with the general provisions of the Treaty. \n Until 31 December 1977, Denmark, Ireland and the United Kingdom shall be authorized to retain, for imports of fresh meat, their national rules relating to protection against swine fever, while complying with the general provisions of the Treaty.\" \n \n Article 2\n The following Article 4a, shall be inserted into Directive 64/432/EEC: \n \"Article 4a \n Until 31 December 1982, with regard to imports from other Member States of bovine animals for breeding, store and slaughter, Ireland and the United Kingdom in respect of Northern Ireland shall be authorized to retain their national rules relating to protection against foot-and-mouth disease while complying with the general provisions of the Treaty. \n The Council, acting unanimously on a proposal from the Commission to be submitted before 1 July 1977, shall adopt before 1 January 1978 any amendments to be made to Annexes A, B and C to Directive 64/432/EEC or any other measures, including provisions, relating to traditional trade between Ireland and the United Kingdom.\" \n \n Article 3\n From 1 January 1978, the following Article 4b shall be inserted into Directive 64/432/EEC: \n \"Article 4b \n Without prejudice to Article 4a, Member States which have been free of foot-and-mouth disease for more than two years ; which do not practice routine vaccination and which, by way of derogation from the requirements of this Directive do not allow in their territory animals vaccinated against the said disease for a period to be determined in accordance with the procedure laid down in Article 12, may, until 31 December 1982 and while complying with general rules of the Treaty, impose the following conditions upon the introduction into their territory of animals for breeding, store and slaughter:    A. when such animals come from a Member State which has been free from foot-and-mouth disease for at least two years:      (1) does not practise vaccination against foot-and-mouth disease and does not allow animals vaccinated against the said disease on its territory, the animals must fulfil the requirements of this Directive, with the exception of the provisions relating to the compulsory vaccination against foot-and-mouth disease; \n          (2) practises vaccination against foot-and-mouth disease and allows animals vaccinated against the said disease on its territory, the animals shall be subject to the requirements of this Directive, with the exception of the provisions relating to vaccination against foot-and-mouth disease, which shall be replaced by the following guarantees:        - bovine animals must have undergone a foot-and-mouth virus test involving scraping of the larynx and the pharynx (known as \"probang test\") and have shown a negative result, \n              - bovine animals and swine must have undergone a serological test for the detection of foot-and-mouth antibodies and have shown a negative result, \n              - bovine animals and swine must have been kept in isolation for 14 days in the exporting country either at the holding of origin or in a quarantine station and under the supervision of an official veterinarian,\n              \n\n  on the understanding that:      (i) no animal on the holding of origin or in the quarantine station (where required) shall have been vaccinated against foot-and-mouth disease for a period of 21 days prior to export and no animal other than those to be exported shall have been brought into the holding and quarantine station during that period; \n          (ii) when the tests required in application of this Article are carried out on the holding, the animals to be exported must be segregated from other animals until they are exported. \n       \n\n The animals shall also be subject to 21 days of quarantine in the importing country; \n     \n\n      B. when such animals come from a Member State which has not been free of foot-and-mouth disease for at least two years:  (1) does not practise vaccination against foot-and-mouth disease and does not allow animals vaccinated against the said disease on its territory, the animals shall be subject to the requirements of this Directive, with the exception of the provisions relating to vaccination against foot-and-mouth disease, which shall be replaced by the following guarantees:    - bovine animals must have undergone a foot-and-mouth virus test involving scraping of the larynx and the pharynx (known as \"probang test\") and have shown a negative result, \n      - bovine animals and swine must have undergone a serological test for the detection of foot-and-mouth antibodies and have shown a negative result, \n      - bovine animals and swine must have been kept in isolation for 14 days in a quarantine station in the exporting country and under the supervision of an official veterinarian, \n      \n \n on the understanding that:    (i) no animal on the holding of origin or in the quarantine station (where required) shall have been vaccinated against foot-and-mouth disease for a period of 30 days prior to export and no animal other than those to be exported shall have been brought into the holding and the quarantine station during that period; \n      (ii) when the tests required in application of this Article are carried out on the holding, the animals to be exported must be segregated from other animals until they are exported. \n      \n \n The animals shall also be subject to 21 days of quarantine in the country of destination; \n (2) practises vaccination against foot-and-mouth disease and allows animals vaccinated against the said disease on its territory, the animals shall be subject to the requirements laid down in B (1) and any additional requirements which may be adopted in accordance with the procedure laid down in Articles 12 or 13. \n              \n\n  The procedure under Article 12 shall be used to determine the detailed rules for the application of this Article, in particular to which of the categories mentioned in the first subparagraphs of A or B Member States belong and also the rules for acceding to the said categories.\" \n       \n\n \n Article 4\n Subparagraph (b) of Article 7 (1) (A) of Directive 64/432/EEC shall be deleted. \n In Article 7 (1) (C) of Directive 64/432/EEC, the date \"31 December 1977\" shall be replaced by \"31 December 1979\". \n \n Article 5\n From 1 January 1978, Article 8 (2) of Directive 72/462/EEC shall be completed as follows: \n \"For breeding and store animals the requirements of this paragraph may vary from one Member State to another in order to take account of the special provisions which Member States enjoy in the framework of intra-Community trade.\" \n \n Article 6\n From 1 January 1978, the text of Article 33 of Directive 72/462/EEC shall be replaced by the following:  \"Article 33 \n When applying Articles 8 and 16, the conditions laid down in accordance with the procedure of Article 29 for imports effected by certain Member States must be at least as strict as those which the same Member States apply in the framework of intra-Community trade.\" \n \n Article 7\n The Member States shall bring into force the laws, regulations and administrative provisions necessary to comply with this Directive:    (a) not later than 1 January 1977 as regards the provisions of Article 1; \n      (b) not later than 1 January 1978 as regards all the other provisions. \n      \n \n They shall forthwith inform the Commission thereof. \n \n Article 8\n This Directive is addressed to the Member States.\n \n \n   Done at Brussels, 21 December 1976. \n For the Council \n The President \n A.P.L.M.M. van der STEE  \n  \n \n  \n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t\t\t\tTop\t\n\t\n\t\n\t\n\t\t\t\n\t\n"
+   ],
+   "accepted_probability":[
+      0.0127367490375588
+   ],
+   "acceptance_state":[
+      "Rejected"
+   ],
+   "content_html":[
+      "<div id=\"text\" class=\"panel-body\">\t\t\t\t\t\n\t\t\t\t\t\n\t\n\t\n\t\t\t\t\t\t\t<div id=\"textTabContent\">\n\t\t\t\t\t\t\t\n\t\n\t\t\t\t\t\t\t\t<div id=\"document1\" class=\"tabContent\">\n\t\t\t\t\t\t\t\t\t<div class=\"tabContent\">\n\t\t\t\t\t\t\t        \t<div lang=\"\">\n\t\t\t\t\t\t\t        \t\t\n<div id=\"banner\">\n<a name=\"top\"></a>\n<div class=\"bglang\">\n<p class=\"bglang\">\n<a class=\"langue\" href=\"http://europa.eu.int/eur-lex/lex/en/editorial/legal_notice.htm\" accesskey=\"8\"><b>Avis juridique important</b></a>\n<br>\n</p>\n</div>\n<div class=\"bgtool\">\n<em class=\"none\">|</em>\n</div>\n</div>\n<a name=\"top\"></a>\n<h1>31977L0098</h1>\n<p>\n<strong>Council Directive 77/98/EEC of 21 December 1976 amending Directives 64/432/EEC, 72/461/EEC and 72/462/EEC on health and veterinary problems  </strong>\n<br>\n<em>\n<br>Official Journal L 026 , 31/01/1977 P. 0081 - 0084<br> Finnish special edition: Chapter 3 Volume 8 P. 0052 <br> Greek special edition: Chapter 03 Volume 17 P. 0056 <br> Swedish special edition: Chapter 3 Volume 8 P. 0052 <br> Spanish special edition: Chapter 03 Volume 11 P. 0170 <br> Portuguese special edition Chapter 03 Volume 11 P. 0170 <br> </em>\n</p>\n<br>\n<div id=\"TexteOnly\">\n<p>\n<txt_te>\n<p>COUNCIL DIRECTIVE  of 21 December 1976  amending Directives 64/432/EEC, 72/461/EEC and 72/462/EEC on health and veterinary problems  (77/98/EEC)</p><p>  THE COUNCIL OF THE EUROPEAN COMMUNITIES, </p><p> Having regard to the Treaty establishing the European Economic Community, and in particular Articles 43 and 100 thereof, </p><p> Having regard to the proposal from the Commission, </p><p> Having regard to the opinion of the European Parliament (1), </p><p> Having regard to the opinion of the Economic and Social Committee (2), </p><p> Whereas, on the occasion of the enlargement of the Community, Denmark, Ireland and the United Kingdom were authorized, by way of derogation from the existing Community Regulations, to retain to some extent their national rules relating to veterinary matters; </p><p> Whereas the special arrangements applying to these three Member States were incorporated into the provisions of Articles 104 and 105 of the Act of Accession (3) ; whereas similar provisions, which were the logical extension of the original provisions have been introduced in Council Acts subsequently adopted ; whereas Article 13 of Council Directive 72/461/EEC of 12 December 1972 on health problems affecting intra-Community trade in fresh meat (4) and Article 33 of Council Directive 72/462/EEC of 12 December 1972 on health and veterinary inspection problems upon importation of bovine animals and swine and fresh meat from third countries (5) were adopted to this end, the two aforementioned Directives having been last amended by Directive 75/379/EEC (6); </p><p> Whereas Article 106 of the Act of Accession and the other abovementioned provisions laid down that the Commission should submit to the Council, by 1 July 1976 at the latest, a report, and in so far as is necessary appropriate proposals, with a view to finding a solution to the problem of these derogations; </p><p> Whereas the solutions adopted must not be such as to compromise the health standard already attained and must ensure, as far as possible, the free movement of animals and meat; </p><p> Whereas, as far as fresh beef and veal is concerned, the risk of spreading disease is undeniably less than is involved in trade in live animals ; whereas, in addition, the conditions governing trade in meat under existing Directives are such that further special guarantees are unneccessary; </p><p> Whereas, as far as live animals are concerned, a system common to all the Member States should gradually be introduced, making a distinction between the various types of animals according to the danger they represent and taking into account the need to expand trade on the basis of existing patterns ; whereas appropriate amendments should be made to Council Directive 64/432/EEC of 26 June 1964 on animal health problems affecting intra-Community trade in bovine animals and swine (7), as last amended by Directive 75/379/EEC; </p><p> Whereas it must be possible for imports into certain Member States from third countries to remain subject to arrangements which are at least as strict as those currently applied in those Member States; </p><p> Whereas the Community Regulations relating, in particular, to foot-and-mouth disease and swine fever should make it possible to find a common and complete solution for all these problems; </p><p> Whereas it would be justified to make provision for a special transitional period for Ireland and the United  (1)OJ No C 6, 10.1.1977, p. 141. (2)Opinion delivered on 27 October 1976 (not yet published in the Official Journal). (3)OJ No L 73, 27.3.1972, p. 14. (4)OJ No L 302, 31.12.1972, p. 24. (5)OJ No L 302, 31.12.1972, p. 28. (6)OJ No L 172, 3.7.1975, p. 17. (7)OJ No 121, 29.7.1964, p. 1977/64.  </p><p> Kingdom in respect of Northern Ireland, which would enable the said countries to effect the amendments necessitated by the implementation of Community Regulations; </p><p> Whereas it seems appropriate, in the light of experience acquired, to extend the use of a rapid and effective procedure for making technical changes to certain provisions or for establishing rules of implementation, </p><p> HAS ADOPTED THIS DIRECTIVE:</p><p> </p><p>   Article 1</p><p> From 1 January 1977, the text of Article 13 of Directive 72/461/EEC shall be replaced by the following: </p><p> \"Article 13 </p><p> Until 31 December 1982, Ireland and the United Kingdom in respect of Northern Ireland, shall be authorized to retain for imports of fresh meat, their national rules relating to protection against foot-and-mouth disease while complying with the general provisions of the Treaty. </p><p> Until 31 December 1977, Denmark, Ireland and the United Kingdom shall be authorized to retain, for imports of fresh meat, their national rules relating to protection against swine fever, while complying with the general provisions of the Treaty.\" </p><p> </p><p> Article 2</p><p> The following Article 4a, shall be inserted into Directive 64/432/EEC: </p><p> \"Article 4a </p><p> Until 31 December 1982, with regard to imports from other Member States of bovine animals for breeding, store and slaughter, Ireland and the United Kingdom in respect of Northern Ireland shall be authorized to retain their national rules relating to protection against foot-and-mouth disease while complying with the general provisions of the Treaty. </p><p> The Council, acting unanimously on a proposal from the Commission to be submitted before 1 July 1977, shall adopt before 1 January 1978 any amendments to be made to Annexes A, B and C to Directive 64/432/EEC or any other measures, including provisions, relating to traditional trade between Ireland and the United Kingdom.\" </p><p> </p><p> Article 3</p><p> From 1 January 1978, the following Article 4b shall be inserted into Directive 64/432/EEC: </p><p> \"Article 4b </p><p> Without prejudice to Article 4a, Member States which have been free of foot-and-mouth disease for more than two years ; which do not practice routine vaccination and which, by way of derogation from the requirements of this Directive do not allow in their territory animals vaccinated against the said disease for a period to be determined in accordance with the procedure laid down in Article 12, may, until 31 December 1982 and while complying with general rules of the Treaty, impose the following conditions upon the introduction into their territory of animals for breeding, store and slaughter:    A. when such animals come from a Member State which has been free from foot-and-mouth disease for at least two years:      (1) does not practise vaccination against foot-and-mouth disease and does not allow animals vaccinated against the said disease on its territory, the animals must fulfil the requirements of this Directive, with the exception of the provisions relating to the compulsory vaccination against foot-and-mouth disease; </p><p>          (2) practises vaccination against foot-and-mouth disease and allows animals vaccinated against the said disease on its territory, the animals shall be subject to the requirements of this Directive, with the exception of the provisions relating to vaccination against foot-and-mouth disease, which shall be replaced by the following guarantees:        - bovine animals must have undergone a foot-and-mouth virus test involving scraping of the larynx and the pharynx (known as \"probang test\") and have shown a negative result, </p><p>              - bovine animals and swine must have undergone a serological test for the detection of foot-and-mouth antibodies and have shown a negative result, </p><p>              - bovine animals and swine must have been kept in isolation for 14 days in the exporting country either at the holding of origin or in a quarantine station and under the supervision of an official veterinarian,</p><p>              </p><p></p><p>  on the understanding that:      (i) no animal on the holding of origin or in the quarantine station (where required) shall have been vaccinated against foot-and-mouth disease for a period of 21 days prior to export and no animal other than those to be exported shall have been brought into the holding and quarantine station during that period; </p><p>          (ii) when the tests required in application of this Article are carried out on the holding, the animals to be exported must be segregated from other animals until they are exported. </p><p>       </p><p></p><p> The animals shall also be subject to 21 days of quarantine in the importing country; </p><p>     </p><p></p><p>      B. when such animals come from a Member State which has not been free of foot-and-mouth disease for at least two years:  (1) does not practise vaccination against foot-and-mouth disease and does not allow animals vaccinated against the said disease on its territory, the animals shall be subject to the requirements of this Directive, with the exception of the provisions relating to vaccination against foot-and-mouth disease, which shall be replaced by the following guarantees:    - bovine animals must have undergone a foot-and-mouth virus test involving scraping of the larynx and the pharynx (known as \"probang test\") and have shown a negative result, </p><p>      - bovine animals and swine must have undergone a serological test for the detection of foot-and-mouth antibodies and have shown a negative result, </p><p>      - bovine animals and swine must have been kept in isolation for 14 days in a quarantine station in the exporting country and under the supervision of an official veterinarian, </p><p>      </p><p> </p><p> on the understanding that:    (i) no animal on the holding of origin or in the quarantine station (where required) shall have been vaccinated against foot-and-mouth disease for a period of 30 days prior to export and no animal other than those to be exported shall have been brought into the holding and the quarantine station during that period; </p><p>      (ii) when the tests required in application of this Article are carried out on the holding, the animals to be exported must be segregated from other animals until they are exported. </p><p>      </p><p> </p><p> The animals shall also be subject to 21 days of quarantine in the country of destination; </p><p> (2) practises vaccination against foot-and-mouth disease and allows animals vaccinated against the said disease on its territory, the animals shall be subject to the requirements laid down in B (1) and any additional requirements which may be adopted in accordance with the procedure laid down in Articles 12 or 13. </p><p>              </p><p></p><p>  The procedure under Article 12 shall be used to determine the detailed rules for the application of this Article, in particular to which of the categories mentioned in the first subparagraphs of A or B Member States belong and also the rules for acceding to the said categories.\" </p><p>       </p><p></p><p> </p><p> Article 4</p><p> Subparagraph (b) of Article 7 (1) (A) of Directive 64/432/EEC shall be deleted. </p><p> In Article 7 (1) (C) of Directive 64/432/EEC, the date \"31 December 1977\" shall be replaced by \"31 December 1979\". </p><p> </p><p> Article 5</p><p> From 1 January 1978, Article 8 (2) of Directive 72/462/EEC shall be completed as follows: </p><p> \"For breeding and store animals the requirements of this paragraph may vary from one Member State to another in order to take account of the special provisions which Member States enjoy in the framework of intra-Community trade.\" </p><p> </p><p> Article 6</p><p> From 1 January 1978, the text of Article 33 of Directive 72/462/EEC shall be replaced by the following:  \"Article 33 </p><p> When applying Articles 8 and 16, the conditions laid down in accordance with the procedure of Article 29 for imports effected by certain Member States must be at least as strict as those which the same Member States apply in the framework of intra-Community trade.\" </p><p> </p><p> Article 7</p><p> The Member States shall bring into force the laws, regulations and administrative provisions necessary to comply with this Directive:    (a) not later than 1 January 1977 as regards the provisions of Article 1; </p><p>      (b) not later than 1 January 1978 as regards all the other provisions. </p><p>      </p><p> </p><p> They shall forthwith inform the Commission thereof. </p><p> </p><p> Article 8</p><p> This Directive is addressed to the Member States.</p><p> </p><p> </p><p>   Done at Brussels, 21 December 1976. </p><p> For the Council </p><p> The President </p><p> A.P.L.M.M. van der STEE  </p><p>  </p><p> </p><p>  </p>\n</txt_te>\n</p>\n</div>\n\n\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t<a class=\"linkToTop\" href=\"#document1\">Top</a>\t</div>\t</div>\t\n\t</div>\t\t\t\n\t</div>"
+   ],
+   "_version_":1677272323165519872
+}
