@@ -1,15 +1,42 @@
 import json, os
+from cleaning import clean_html, clean_pdf, delete_annexes
 from multiprocessing import Pool
+from langdetect import detect
 from itertools import product
+from base64 import b64encode, b64decode
 
 
 def parse_files(path):
     with open(path, 'r') as inputfile:
         pydict = json.loads(inputfile.readlines()[0])
-        if check_accepted(pydict):
-            pass
-        if check_rejected(pydict):
-            pass
+        if addEurlexLabels(pydict):
+            print(addEurlexLabels)
+            
+
+def addEurlexLabels(dictionary):
+#This function will label according to the business rules. It will return 'None' if neither.
+    if accepted_eurlex(dictionary):
+        label=1
+        label_name='accepted'
+        encoded_doc = getText(dictionary)
+        if encoded_doc:
+            return f"{encoded_doc.decode()  }\t{ label_name }\t{label}"
+
+    elif rejected_eurlex(dictionary):
+        label=0
+        label_name='declined'
+        encoded_doc = getText(dictionary)
+        if encoded_doc:
+            return f"{encoded_doc.decode()  }\t{ label_name }\t{label}"
+        
+def getText(dictionary):
+#Takes in a dictionary (loaded from the .json) and returns a base64 encoded string.
+    articles = clean_html(dictionary['content_html'][0])
+    articles = delete_annexes(articles)
+    document = ' '.join(articles)
+    if detect(document) == 'en':
+        encoded_document = b64encode(document.encode())
+        return encoded_document
 
 '''
 Directory codes:
@@ -35,7 +62,7 @@ Summary codes:
 240403  = Internal market / Single market for services / Financial services: insurance
 
 '''
-def check_accepted(dictionary):
+def accepted_eurlex(dictionary):
     accepted_directory_codes = ['062020', '0160', '1040', '1030']
     accepted_eurovoc_descriptors = ['4838', '5455', '5460', '5465', '8434']
     accepted_subject_matter = ['BEI', 'BCE']
@@ -69,7 +96,7 @@ Eurovoc descriptors:
 889     = State aid
 
 '''
-def check_rejected(dictionary):
+def rejected_eurlex(dictionary):
     rejected_directory_codes = ['08', '117020', '09']
     rejected_eurovoc_descriptors = ['889']
     rejected_subject_matter = []
@@ -93,7 +120,7 @@ def isaccepted_code(dictionary, classification_type, accepted_codes):
 
 if __name__ == "__main__":
     odir = '/home/sandervanbeers/Desktop/DGFISMA/DATA_DUMP_13_08_ALL/EURLEX'
-    all_files = [os.path.join(odir, filename) for filename in os.listdir(odir)]
+    all_files = [os.path.join(odir, filename) for filename in os.listdir(odir) if filename.endswith('.jsonl')]
     pool = Pool()                     # Create a multiprocessing Pool
     pool.map(parse_files, all_files)  # process files iterable with pool
     pool.close()
