@@ -1,4 +1,4 @@
-import json, os
+import jsonlines, os
 from cleaning import clean_html, clean_pdf, delete_annexes
 from multiprocessing import Pool
 from langdetect import detect
@@ -6,23 +6,26 @@ from itertools import product
 from base64 import b64encode, b64decode
 
 
-def parse_files(path):
-    with open(path, 'r') as inputfile:
-        pydict = json.loads(inputfile.readlines()[0])
-        if addEurlexLabels(pydict):
-            print(addEurlexLabels)
+def parse_jsonlines(path):
+    with jsonlines.open(path) as reader:
+        for obj in reader:
+            if 'content_html' in obj:
+                if 'eurlex' in obj['website']:
+                    if addEurlexLabels(obj):
+                        #Each line here is training data as required by the train.py script.
+                        print(addEurlexLabels(obj))
             
 
 def addEurlexLabels(dictionary):
 #This function will label according to the business rules. It will return 'None' if neither.
-    if accepted_eurlex(dictionary):
+    if isAcceptedEurlex(dictionary):
         label=1
         label_name='accepted'
         encoded_doc = getText(dictionary)
         if encoded_doc:
             return f"{encoded_doc.decode()  }\t{ label_name }\t{label}"
 
-    elif rejected_eurlex(dictionary):
+    elif isRejectedEurlex(dictionary):
         label=0
         label_name='declined'
         encoded_doc = getText(dictionary)
@@ -62,7 +65,7 @@ Summary codes:
 240403  = Internal market / Single market for services / Financial services: insurance
 
 '''
-def accepted_eurlex(dictionary):
+def isAcceptedEurlex(dictionary):
     accepted_directory_codes = ['062020', '0160', '1040', '1030']
     accepted_eurovoc_descriptors = ['4838', '5455', '5460', '5465', '8434']
     accepted_subject_matter = ['BEI', 'BCE']
@@ -96,7 +99,7 @@ Eurovoc descriptors:
 889     = State aid
 
 '''
-def rejected_eurlex(dictionary):
+def isRejectedEurlex(dictionary):
     rejected_directory_codes = ['08', '117020', '09']
     rejected_eurovoc_descriptors = ['889']
     rejected_subject_matter = []
@@ -122,6 +125,6 @@ if __name__ == "__main__":
     odir = '/home/sandervanbeers/Desktop/DGFISMA/DATA_DUMP_13_08_ALL/EURLEX'
     all_files = [os.path.join(odir, filename) for filename in os.listdir(odir) if filename.endswith('.jsonl')]
     pool = Pool()                     # Create a multiprocessing Pool
-    pool.map(parse_files, all_files)  # process files iterable with pool
+    pool.map(parse_jsonlines, all_files)  # process files iterable with pool
     pool.close()
     pool.join()
