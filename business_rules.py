@@ -1,5 +1,4 @@
 import jsonlines, os
-from cleaning import clean_html, clean_pdf, delete_annexes
 from multiprocessing import Pool
 from langdetect import detect
 from itertools import product
