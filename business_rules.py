@@ -5,20 +5,29 @@ from langdetect import detect
 from itertools import product
 from base64 import b64encode, b64decode
 
+def main():
+    pool = Pool()                     # Create a multiprocessing Pool
+    odir = '/home/sandervanbeers/Desktop/DGFISMA/DATA_DUMP_13_08_ALL/EURLEX'
+    training_set_output = '/home/sandervanbeers/Desktop/DGFISMA/data/new_without_regex/train_data_new.tsv'
+    all_files = [os.path.join(odir, filename) for filename in os.listdir(odir) if filename.endswith('.jsonl')]
+    results = pool.map(parse_jsonlines, all_files)  # process files iterable with pool
+    with open(training_set_output, 'w+') as output_file:
+        output_file.writelines(f"{result}\n" for result in results if result is not None)
+    pool.close()    #close the multiprocessing pool
+    pool.join()
 
 def parse_jsonlines(path):
     with jsonlines.open(path) as reader:
         for obj in reader:
-            if 'content_html' in obj:
+            if 'content' in obj:
                 if 'eurlex' in obj['website']:
                     if addEurlexLabels(obj):
                         #Each line here is training data as required by the train.py script.
-                        print(addEurlexLabels(obj))
+                        return addEurlexLabels(obj)
             
 
 def addEurlexLabels(dictionary):
 #This function will label according to the business rules. It will return 'None' if neither.
-    assert isinstance(dictionary, dict)
     if isAcceptedEurlex(dictionary):
         encoded_doc = getText(dictionary)
         if encoded_doc:
@@ -35,10 +44,10 @@ def addEurlexLabels(dictionary):
         
 def getText(dictionary):
 #Takes in a dictionary (loaded from the .json) and returns a base64 encoded string.
-    assert isinstance(dictionary, dict)
-    articles = clean_html(dictionary['content_html'][0])
-    articles = delete_annexes(articles)
-    document = ' '.join(articles)
+    content = dictionary['content']
+    if isinstance(content, list):
+        content = content[0]
+    document = ' '.join(content.split())
     if detect(document) == 'en':
         encoded_document = b64encode(document.encode())
         return encoded_document
@@ -68,7 +77,6 @@ def isAcceptedEurlex(dictionary):
     240403  = Internal market / Single market for services / Financial services: insurance
     '''
 
-    assert isinstance(dictionary, dict)
     accepted_directory_codes = ['062020', '0160', '1040', '1030']
     accepted_eurovoc_descriptors = ['4838', '5455', '5460', '5465', '8434']
     accepted_subject_matter = ['BEI', 'BCE']
@@ -103,7 +111,6 @@ def isRejectedEurlex(dictionary):
     889     = State aid
 
     '''
-    assert isinstance(dictionary, dict)
     rejected_directory_codes = ['08', '117020', '09']
     rejected_eurovoc_descriptors = ['889']
     rejected_subject_matter = []
@@ -118,7 +125,6 @@ def isRejectedEurlex(dictionary):
 
 def isaccepted_code(dictionary, classification_type, accepted_codes):
     #This functions checks whether any of the classification codes of a certain type start with any of the accepted (or rejected) codes. It expects the dictionary object, the classification type and a list of the accepted codes.
-    assert isinstance(dictionary, dict)
     code_indices = [i for i, x in enumerate(dictionary['classifications_type']) if x == classification_type]
     if code_indices:
         all_codes = [dictionary['classifications_code'][index] for index in code_indices]
@@ -127,9 +133,4 @@ def isaccepted_code(dictionary, classification_type, accepted_codes):
             return True
 
 if __name__ == "__main__":
-    odir = '/home/sandervanbeers/Desktop/DGFISMA/DATA_DUMP_13_08_ALL/EURLEX'
-    all_files = [os.path.join(odir, filename) for filename in os.listdir(odir) if filename.endswith('.jsonl')]
-    pool = Pool()                     # Create a multiprocessing Pool
-    pool.map(parse_jsonlines, all_files)  # process files iterable with pool
-    pool.close()
-    pool.join()
+    main()
