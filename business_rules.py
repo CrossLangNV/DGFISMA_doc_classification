@@ -18,22 +18,24 @@ def parse_jsonlines(path):
 
 def addEurlexLabels(dictionary):
 #This function will label according to the business rules. It will return 'None' if neither.
+    assert isinstance(dictionary, dict)
     if isAcceptedEurlex(dictionary):
-        label=1
-        label_name='accepted'
         encoded_doc = getText(dictionary)
         if encoded_doc:
+            label=1
+            label_name='accepted'
             return f"{encoded_doc.decode()  }\t{ label_name }\t{label}"
 
     elif isRejectedEurlex(dictionary):
-        label=0
-        label_name='declined'
         encoded_doc = getText(dictionary)
         if encoded_doc:
+            label=0
+            label_name='declined'
             return f"{encoded_doc.decode()  }\t{ label_name }\t{label}"
         
 def getText(dictionary):
 #Takes in a dictionary (loaded from the .json) and returns a base64 encoded string.
+    assert isinstance(dictionary, dict)
     articles = clean_html(dictionary['content_html'][0])
     articles = delete_annexes(articles)
     document = ' '.join(articles)
@@ -41,31 +43,32 @@ def getText(dictionary):
         encoded_document = b64encode(document.encode())
         return encoded_document
 
-'''
-Directory codes:
-062020  = Right of establishment and freedom to provide services / Sectoral application
-160     = General, financial and institutional matters / Financial and budgetary provisions
-1040    = Economic and monetary policy and free movement of capital / Free movement of capital
-1030    = Economic and monetary policy and free movement of capital / Economic policy
-
-Eurovoc descriptors:
-4838    = European Investment Bank
-5455    = European Central Bank
-5460	= European Bank for Reconstruction and Development
-5465    = Money laundering
-8434    = Counterfeiting
-
-Subject matter:
-BEI     = European Investment Bank
-BCE     = European Central Bank
-
-Summary codes:
-1409    = Economic and monetary affairs / Banking and financial services
-2414    = Internal market / Banking and finance
-240403  = Internal market / Single market for services / Financial services: insurance
-
-'''
 def isAcceptedEurlex(dictionary):
+    '''
+    Directory codes:
+    062020  = Right of establishment and freedom to provide services / Sectoral application
+    160     = General, financial and institutional matters / Financial and budgetary provisions
+    1040    = Economic and monetary policy and free movement of capital / Free movement of capital
+    1030    = Economic and monetary policy and free movement of capital / Economic policy
+
+    Eurovoc descriptors:
+    4838    = European Investment Bank
+    5455    = European Central Bank
+    5460	= European Bank for Reconstruction and Development
+    5465    = Money laundering
+    8434    = Counterfeiting
+
+    Subject matter:
+    BEI     = European Investment Bank
+    BCE     = European Central Bank
+
+    Summary codes:
+    1409    = Economic and monetary affairs / Banking and financial services
+    2414    = Internal market / Banking and finance
+    240403  = Internal market / Single market for services / Financial services: insurance
+    '''
+
+    assert isinstance(dictionary, dict)
     accepted_directory_codes = ['062020', '0160', '1040', '1030']
     accepted_eurovoc_descriptors = ['4838', '5455', '5460', '5465', '8434']
     accepted_subject_matter = ['BEI', 'BCE']
@@ -89,17 +92,18 @@ def isAcceptedEurlex(dictionary):
         elif isaccepted_code(dictionary, 'summary code', accepted_summary_codes):
             return True
 
-'''
-Directory codes:
-08      = Competition policy
-09      = Taxation
-117020  = External relations / Development policy / Aid to developing countries
-
-Eurovoc descriptors:
-889     = State aid
-
-'''
 def isRejectedEurlex(dictionary):
+    '''
+    Directory codes:
+    08      = Competition policy
+    09      = Taxation
+    117020  = External relations / Development policy / Aid to developing countries
+
+    Eurovoc descriptors:
+    889     = State aid
+
+    '''
+    assert isinstance(dictionary, dict)
     rejected_directory_codes = ['08', '117020', '09']
     rejected_eurovoc_descriptors = ['889']
     rejected_subject_matter = []
@@ -114,6 +118,7 @@ def isRejectedEurlex(dictionary):
 
 def isaccepted_code(dictionary, classification_type, accepted_codes):
     #This functions checks whether any of the classification codes of a certain type start with any of the accepted (or rejected) codes. It expects the dictionary object, the classification type and a list of the accepted codes.
+    assert isinstance(dictionary, dict)
     code_indices = [i for i, x in enumerate(dictionary['classifications_type']) if x == classification_type]
     if code_indices:
         all_codes = [dictionary['classifications_code'][index] for index in code_indices]
