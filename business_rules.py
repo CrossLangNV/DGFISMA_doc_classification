@@ -49,7 +49,9 @@ def parse_jsonlines(path):
             
 
 def addEurlexLabels(dictionary):
-#This function will label according to the business rules. It will return 'None' if neither.
+    '''
+    This function takes in a dictionary loaded from json and creates labels according to the Eurlex business rules. It will return 'None' if neither.
+    '''
     if isAcceptedEurlex(dictionary):
         encoded_doc = getText(dictionary)
         if encoded_doc:
@@ -65,7 +67,9 @@ def addEurlexLabels(dictionary):
             return f"{encoded_doc.decode()  }\t{ label_name }\t{label}"
         
 def getText(dictionary):
-#Takes in a dictionary (loaded from the .json) and returns a base64 encoded string.
+    '''
+    Takes in a dictionary (loaded from json) and returns a base64 encoded string from the 'content'-key.
+    '''
     content = dictionary['content']
     if isinstance(content, list):
         content = content[0]
