@@ -1,6 +1,14 @@
 Instructions
 ------------
 
+To create a training set from the business rules:
+
+*python /business_rules.py \
+--input_dir   input_directory
+--output_dir  output_directory \
+
+This will create the *output_directory*, where the train_data.tsv will be created (tab separated value-format). 
+
 use "dbuild.sh" to build the docker image <br />
 use "dcli.sh" to start a docker container
 

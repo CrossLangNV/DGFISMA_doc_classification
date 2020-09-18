@@ -3,15 +3,38 @@ from multiprocessing import Pool
 from langdetect import detect
 from itertools import product
 from base64 import b64encode, b64decode
+import argparse
 
 def main():
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--input_dir", dest="input_dir", help="Location of the data export.", required=True)
+    parser.add_argument("--output_dir", dest="output_dir", help="output directory (where the train data will be written to)", required=True)
+    args = parser.parse_args()
+
+    bootstrap(input_dir=args.input_dir, output_dir=args.output_dir)
+
+
+def bootstrap(input_dir, output_dir):
+    '''
+    bootstrap() takes an input directory and output directory as argument.
+    It reads all .jsonl-files and creates a training set according to the business rules.
+    It writes the output to a .tsv-file in the output_dir
+    '''
     pool = Pool()                     # Create a multiprocessing Pool
-    odir = '/home/sandervanbeers/Desktop/DGFISMA/DATA_DUMP_13_08_ALL/EURLEX'
-    training_set_output = '/home/sandervanbeers/Desktop/DGFISMA/data/new_without_regex/train_data_new.tsv'
-    all_files = [os.path.join(odir, filename) for filename in os.listdir(odir) if filename.endswith('.jsonl')]
+
+    os.makedirs(output_dir, exist_ok=True)
+
+    training_set_output = os.path.join(output_dir, 'train_data.tsv')
+    if os.path.isfile(training_set_output):
+        raise Exception('A training file already exists in the output directory.')
+
+    all_files = [os.path.join(input_dir, filename) for filename in os.listdir(input_dir) if filename.endswith('.jsonl')]
     results = pool.map(parse_jsonlines, all_files)  # process files iterable with pool
+
     with open(training_set_output, 'w+') as output_file:
         output_file.writelines(f"{result}\n" for result in results if result is not None)
+
     pool.close()    #close the multiprocessing pool
     pool.join()
 
