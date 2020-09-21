@@ -5,16 +5,6 @@ from itertools import product
 from base64 import b64encode, b64decode
 import argparse
 
-def main():
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--input_dir", dest="input_dir", help="Location of the data export.", required=True)
-    parser.add_argument("--output_dir", dest="output_dir", help="output directory (where the train data will be written to)", required=True)
-    args = parser.parse_args()
-
-    bootstrap(input_dir=args.input_dir, output_dir=args.output_dir)
-
-
 def bootstrap(input_dir, output_dir):
     '''
     bootstrap() takes an input directory and output directory as argument.
@@ -159,4 +149,9 @@ def isaccepted_code(dictionary, classification_type, accepted_codes):
             return True
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--input_dir", dest="input_dir", help="Location of the data export.", required=True)
+    parser.add_argument("--output_dir", dest="output_dir", help="output directory (where the train data will be written to)", required=True)
+    args = parser.parse_args()
+
+    bootstrap(input_dir=args.input_dir, output_dir=args.output_dir)
