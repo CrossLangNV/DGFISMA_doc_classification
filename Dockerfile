@@ -34,7 +34,8 @@ RUN apt-get update
 RUN apt-get -y install --reinstall build-essential
 RUN apt-get -y install gcc
 
-RUN pip install Cython==0.29.19 bs4==0.0.1 beautifulsoup4==4.5.3 numpy==1.16.0 scikit-learn==0.20.0
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
 
 WORKDIR /work
 COPY cleaning.py /work
