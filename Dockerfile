@@ -38,7 +38,6 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
 WORKDIR /work
-COPY cleaning.py /work
 COPY app.py /work
 
 COPY $MODEL_PATH /work/models/model.p
