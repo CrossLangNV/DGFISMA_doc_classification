@@ -5,6 +5,50 @@ from itertools import product
 from base64 import b64encode, b64decode
 import argparse
 
+'''
+
+Directory codes:
+062020  = Right of establishment and freedom to provide services / Sectoral application
+160     = General, financial and institutional matters / Financial and budgetary provisions
+1040    = Economic and monetary policy and free movement of capital / Free movement of capital
+1030    = Economic and monetary policy and free movement of capital / Economic policy
+
+Eurovoc descriptors:
+4838    = European Investment Bank
+5455    = European Central Bank
+5460	= European Bank for Reconstruction and Development
+5465    = Money laundering
+8434    = Counterfeiting
+
+Subject matter:
+BEI     = European Investment Bank
+BCE     = European Central Bank
+
+Summary codes:
+1409    = Economic and monetary affairs / Banking and financial services
+2414    = Internal market / Banking and finance
+240403  = Internal market / Single market for services / Financial services: insurance
+'''
+
+accepted_directory_codes = ['062020', '0160', '1040', '1030']
+accepted_eurovoc_descriptors = ['4838', '5455', '5460', '5465', '8434']
+accepted_subject_matter = ['BEI', 'BCE']
+accepted_summary_codes = ['1409', '2414', '240403']
+
+'''
+Directory codes:
+08      = Competition policy
+09      = Taxation
+117020  = External relations / Development policy / Aid to developing countries
+
+Eurovoc descriptors:
+889     = State aid
+
+'''
+rejected_directory_codes = ['08', '117020', '09']
+rejected_eurovoc_descriptors = ['889']
+rejected_subject_matter = []
+
 def bootstrap(input_dir, output_dir):
     '''
     bootstrap() takes an input directory and output directory as argument.
@@ -70,34 +114,8 @@ def getText(dictionary):
 
 def isAcceptedEurlex(dictionary):
     '''
-    Directory codes:
-    062020  = Right of establishment and freedom to provide services / Sectoral application
-    160     = General, financial and institutional matters / Financial and budgetary provisions
-    1040    = Economic and monetary policy and free movement of capital / Free movement of capital
-    1030    = Economic and monetary policy and free movement of capital / Economic policy
-
-    Eurovoc descriptors:
-    4838    = European Investment Bank
-    5455    = European Central Bank
-    5460	= European Bank for Reconstruction and Development
-    5465    = Money laundering
-    8434    = Counterfeiting
-
-    Subject matter:
-    BEI     = European Investment Bank
-    BCE     = European Central Bank
-
-    Summary codes:
-    1409    = Economic and monetary affairs / Banking and financial services
-    2414    = Internal market / Banking and finance
-    240403  = Internal market / Single market for services / Financial services: insurance
+    isAcceptedEurlex() determines whether one of the codes is accepted.
     '''
-
-    accepted_directory_codes = ['062020', '0160', '1040', '1030']
-    accepted_eurovoc_descriptors = ['4838', '5455', '5460', '5465', '8434']
-    accepted_subject_matter = ['BEI', 'BCE']
-    accepted_summary_codes = ['1409', '2414', '240403']
-
     if 'misc_author' in dictionary:
         if 'Directorate-General for Financial Stability, Financial Services and Capital Markets Union' in dictionary['misc_author']:
             return True
@@ -118,19 +136,8 @@ def isAcceptedEurlex(dictionary):
 
 def isRejectedEurlex(dictionary):
     '''
-    Directory codes:
-    08      = Competition policy
-    09      = Taxation
-    117020  = External relations / Development policy / Aid to developing countries
-
-    Eurovoc descriptors:
-    889     = State aid
-
+    isRejectedEurlex() determines whether one of the codes is accepted.
     '''
-    rejected_directory_codes = ['08', '117020', '09']
-    rejected_eurovoc_descriptors = ['889']
-    rejected_subject_matter = []
-
     if 'classifications_type' in dictionary and 'classifications_code' in dictionary:
         if isaccepted_code(dictionary, 'directory code', rejected_directory_codes):
             return True
