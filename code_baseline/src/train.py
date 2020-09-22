@@ -35,8 +35,6 @@ if __name__ == "__main__":
                         help="path to the output folder", required=True)
     #Parameters for calculation of features:
     parser.add_argument("--vectorizer_type", dest="vectorizer_type", type=str , default='tfidf' , choices=[ 'tfidf', None] , help="vectorizer used for feature extraction" , required=False ) 
-    parser.add_argument("--n_features", dest="n_features", type=int ,default=2**16,
-                        help="nr of features when using the hashing vectorizer (ignored when tfidf is used", required=False)
     parser.add_argument("--language", dest="language", type=str , default='english' , help="language used by Vectorizer (i.e. stopwords)" , required=False )
     #Feature selection:
     parser.add_argument("--feature_selection_svc", dest="feature_selection_svc", action='store_true' ,default=False,
@@ -45,8 +43,6 @@ if __name__ == "__main__":
     #Parameters classfier:
     parser.add_argument("--penalty", dest="penalty", type=str ,default="l2", choices=[ 'l1','l2' ],
                         help="penalty of linear SVC classifier used for classification", required=False)
-    parser.add_argument("--loss", dest="loss", type=str ,default="squared_hinge",choices=[ 'hinge','squared_hinge' ],
-                        help='Specifies the loss function. Hinge is standard SVM loss, while squared_hinge is the square of the hinge loss.', required=False)
     parser.add_argument("--dual", dest="dual", action='store_true' ,default=False,
                         help="Solve the dual or primal optimization problem. Prefer dual=False when n_samples > n_features (i.e. when doing feature selection beforehand)", required=False)
     parser.add_argument( "--remove_punctuation_numbers", dest="remove_punctuation_numbers", action='store_true' ,default=False,
@@ -109,7 +105,7 @@ if __name__ == "__main__":
     else:
         feature_selection=None
 
-    classifier=LinearSVC(penalty=args.penalty, loss=args.loss , dual=args.dual, class_weight=class_weight )
+    classifier=LinearSVC(penalty=args.penalty, loss="squared_hinge" , dual=args.dual, class_weight=class_weight )
     
     #calibrated the classifier (for predict_proba): 
     calibrated_classifier = CalibratedClassifierCV(classifier , cv=5 ) 
