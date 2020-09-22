@@ -20,6 +20,8 @@ from sklearn.svm import LinearSVC
 from sklearn import metrics
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.model_selection import cross_validate
+from sklearn.model_selection import GridSearchCV
+
 
 def size_mb(docs):
     return sum(len(s.encode('utf-8')) for s in docs) / 1e6
@@ -32,13 +34,11 @@ if __name__ == "__main__":
     parser.add_argument("--output_dir", dest="output_dir",
                         help="path to the output folder", required=True)
     #Parameters for calculation of features:
-    parser.add_argument("--vectorizer_type", dest="vectorizer_type", type=str , default='tfidf' , choices=[ 'tfidf', 'hashing'] , help="vectorizer used for feature extraction" , required=False ) 
+    parser.add_argument("--vectorizer_type", dest="vectorizer_type", type=str , default='tfidf' , choices=[ 'tfidf', None] , help="vectorizer used for feature extraction" , required=False ) 
     parser.add_argument("--n_features", dest="n_features", type=int ,default=2**16,
                         help="nr of features when using the hashing vectorizer (ignored when tfidf is used", required=False)
     parser.add_argument("--language", dest="language", type=str , default='english' , help="language used by Vectorizer (i.e. stopwords)" , required=False )
     #Feature selection:
-    parser.add_argument("--n_select_chi2", dest="n_select_chi2", type=int ,default=None,
-                        help="nr of features selected by chi2 test. Ignored when set to 'None'", required=False)
     parser.add_argument("--feature_selection_svc", dest="feature_selection_svc", action='store_true' ,default=False,
                         help="If set to True, using sklearn.feature_selection.SelectFromModel with linear SVC", required=False)
     parser.add_argument("--penalty_feature_selection", dest="penalty_feature_selection", type=str, default="l1", choices=['l1','l2'], help="penalty of linear SVC classifier used for feature selection", required=False)
@@ -53,6 +53,8 @@ if __name__ == "__main__":
                         help="Whether to remove punctuation and numbers from the training data.", required=False  )
     parser.add_argument( "--balanced", dest="balanced", action="store_true", default=False,
                         help="The “balanced” mode automatically adjusts weights inversely proportional to class frequencies in the input data.", required=False)
+    parser.add_argument( "--jobs", dest="jobs", type=int, default=-1,
+                        help="Number of jobs to run in parallel. -1 means using all processors", required=False)
     args = parser.parse_args()
     
     
@@ -89,77 +91,90 @@ if __name__ == "__main__":
     if args.language=='':
         args.language=None
     
-    if args.vectorizer_type=='tfidf':
-        print( "Using Tfidf Vectorizer." )
-        vectorizer = TfidfVectorizer(sublinear_tf=True, max_df=0.5,
-                                 stop_words= args.language )
+    print( "Using Tfidf Vectorizer." )
+    vectorizer = TfidfVectorizer(sublinear_tf=True, max_df=0.5,
+                             stop_words= args.language )
 
-    elif args.vectorizer_type=='hashing':  
-        print( "Using Hashing Vectorizer." )
-        vectorizer = HashingVectorizer(stop_words=args.language, alternate_sign=False,
-                                       n_features=args.n_features)
-
-    if args.n_select_chi2:
-        print( f"Extracting {args.n_select_chi2} features by a chi-squared test.")
-        ch2 = SelectKBest(chi2, k=args.n_select_chi2)
-    else:
-        ch2= None
-
-    if args.feature_selection_svc:
-        print( f"Extracting features via sklearn.feature_selection. SelectKbest using LinearSVC.")
-        feature_selection=SelectFromModel(LinearSVC(penalty=args.penalty_feature_selection, dual=False,
-                                                          tol=1e-3)) 
-    else:
-        feature_selection=None
-
+    
     if args.balanced:
         print("Using balanced class weights.")
         class_weight = 'balanced'
     else:
         class_weight = None
+    
+    if args.feature_selection_svc:
+        print( f"Extracting features via sklearn.feature_selection. SelectKbest using LinearSVC.")
+        feature_selection=SelectFromModel(LinearSVC(penalty=args.penalty_feature_selection, dual=False,
+                                                          tol=1e-3,class_weight=class_weight )) 
+    else:
+        feature_selection=None
 
     classifier=LinearSVC(penalty=args.penalty, loss=args.loss , dual=args.dual, class_weight=class_weight )
+    
     #calibrated the classifier (for predict_proba): 
     calibrated_classifier = CalibratedClassifierCV(classifier , cv=5 ) 
     
-    clf=Pipeline([
-    ( 'vectorizer', vectorizer)  ,
-    ( 'chisquare', ch2  )  ,
-    ('feature_selection',  feature_selection  )   ,
-    ('classification', calibrated_classifier  )
-    ])
+    if feature_selection:
+        clf=Pipeline([
+        ( 'vectorizer', vectorizer)  ,
+        ('feature_selection',  feature_selection  )   ,
+        ('classification', calibrated_classifier  )
+        ])
+        
+        #grid
+        param_grid = {
+        'vectorizer__max_df': [0.3,0.4,0.5,0.6,0.7 ] ,
+        'feature_selection__estimator__C': [1.0] ,
+        'classification__base_estimator__C': list(np.logspace(-3, 1, 5)) 
+        }
+        
+    else:
+        clf=Pipeline([
+        ( 'vectorizer', vectorizer)  ,
+        ('classification', calibrated_classifier  )
+        ])
 
-    clf.fit(  train_data , train_labels )
-    scoring = ['f1', 'precision', 'recall']
-    scores = cross_validate(clf, train_data, train_labels, cv=5, scoring=scoring, return_train_score=True)
-    scores_dict = {
-        'mean_train_f1': scores['train_f1'].mean(),
-        'std_train_f1': scores['train_f1'].std() * 2,
-        'mean_test_f1': scores['test_f1'].mean(),
-        'std_test_f1': scores['test_f1'].std() * 2,
-        'mean_train_precision': scores['train_precision'].mean(),
-        'std_train_precision': scores['train_precision'].std() * 2,
-        'mean_test_precision': scores['test_precision'].mean(),
-        'std_test_precision': scores['test_precision'].std() * 2,
-        'mean_train_recall': scores['train_recall'].mean(),
-        'std_train_recall': scores['train_recall'].std() * 2,
-        'mean_test_recall': scores['test_recall'].mean(),
-        'std_test_recall': scores['test_recall'].std() * 2,
-        'mean_fit_time': scores['fit_time'].mean(),
-        'std_fit_time':  scores['fit_time'].std() * 2
-    }
-    json.dump(scores_dict, open( os.path.join( args.output_dir, "cross_validation_scores.json"  ), "w" ))
+        #grid
+        param_grid = {
+        'vectorizer__max_df': [0.3,0.4,0.5,0.6,0.7 ] ,
+        'classification__base_estimator__C': list(np.logspace(-3, 1, 5)) 
+        }
+
+
+    scoring=['f1', 'precision', 'recall']
+
+    search = GridSearchCV(clf, param_grid, scoring=scoring , n_jobs=args.jobs, cv=5, refit=scoring[0], return_train_score=True   )
+
+    search.fit(train_data, train_labels)
 
     #show the selected features (i.e. keywords used for classification):
+
+    scores_dict = {
+    'mean_train_f1': search.cv_results_['mean_train_f1'][ search.best_index_],
+    'std_train_f1': search.cv_results_['std_train_f1'][ search.best_index_] * 2,
+    'mean_test_f1': search.cv_results_['mean_test_f1'][ search.best_index_],
+    'std_test_f1': search.cv_results_['std_test_f1'][ search.best_index_] * 2,
+    'mean_train_precision': search.cv_results_['mean_train_precision'][ search.best_index_],
+    'std_train_precision': search.cv_results_['std_train_precision'][ search.best_index_] * 2,
+    'mean_test_precision': search.cv_results_['mean_test_precision'][ search.best_index_],
+    'std_test_precision': search.cv_results_['std_test_precision'][ search.best_index_] * 2,  
+    'mean_train_recall': search.cv_results_['mean_train_recall'][ search.best_index_],
+    'std_train_recall': search.cv_results_['std_train_recall'][ search.best_index_] * 2,
+    'mean_test_recall': search.cv_results_['mean_test_recall'][ search.best_index_],
+    'std_test_recall': search.cv_results_['std_test_recall'][ search.best_index_] * 2,   
+    'mean_fit_time' : search.cv_results_['mean_fit_time'][ search.best_index_],
+    'std_fit_time' : search.cv_results_['std_fit_time'][ search.best_index_]*2
+    }
     
-    if args.feature_selection_svc and not args.n_select_chi2:
+    json.dump(scores_dict, open( os.path.join( args.output_dir, "cross_validation_scores.json"  ), "w" ))
+    
+    if args.feature_selection_svc:
 
         print("Selected features are: \n")
         
-        select=clf.named_steps['feature_selection']
-        vec=clf.named_steps[ 'vectorizer' ]
-        select.get_support()
-
+        select=search.best_estimator_.named_steps[ 'feature_selection' ]
+        vec=search.best_estimator_.named_steps[ 'vectorizer' ]
+        
         i=0
 
         assert( select.get_support().shape[0]  ==  len(  vec.get_feature_names() ) ) 
@@ -170,10 +185,8 @@ if __name__ == "__main__":
 
         print( f"{i} selected features" )
     
-    
-    
     #3) Save the classifier
 
-    pickle.dump( clf , open( os.path.join( args.output_dir, "model.p"  ), "wb" ) )
+    pickle.dump( search.best_estimator_ , open( os.path.join( args.output_dir, "model.p"  ), "wb" ) )
     
     
