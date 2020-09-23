@@ -7,8 +7,6 @@ import pickle
 import base64
 import binascii
 
-from cleaning import clean_html, clean_pdf, delete_annexes
-
 app = Flask(__name__)
 
 MODEL_PATH="/work/models/model.p"
