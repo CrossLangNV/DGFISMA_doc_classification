@@ -1,9 +1,13 @@
-import jsonlines, os
-from multiprocessing import Pool
-from langdetect import detect
-from itertools import product
-from base64 import b64encode, b64decode
 import argparse
+import os
+from base64 import b64decode, b64encode
+from itertools import product
+from multiprocessing import Pool
+
+import jsonlines
+from langdetect import detect
+
+from checkers import MiscAuthorChecker, ClassificationChecker
 
 '''
 
@@ -29,11 +33,13 @@ Summary codes:
 2414    = Internal market / Banking and finance
 240403  = Internal market / Single market for services / Financial services: insurance
 '''
-
-accepted_directory_codes = ['062020', '0160', '1040', '1030']
-accepted_eurovoc_descriptors = ['4838', '5455', '5460', '5465', '8434']
-accepted_subject_matter = ['BEI', 'BCE']
-accepted_summary_codes = ['1409', '2414', '240403']
+accepted_classifications = {
+    'directory code': ['062020', '0160', '1040', '1030'],
+    'eurovoc descriptor': ['4838', '5455', '5460', '5465', '8434'],
+    'subject matter': ['BEI', 'BCE'],
+    'summary codes': ['1409', '2414', '240403']
+}
+accepted_authors = ['Directorate-General for Financial Stability, Financial Services and Capital Markets Union']
 
 '''
 Directory codes:
@@ -47,7 +53,50 @@ Eurovoc descriptors:
 '''
 rejected_directory_codes = ['08', '117020', '09']
 rejected_eurovoc_descriptors = ['889']
+rejected_authors = []
 rejected_subject_matter = []
+
+class EurlexDocument:
+    def __init__(self, jsonline_dictionary):
+        self.misc_author = jsonline_dictionary.get('misc_author', [])
+        self.misc_department_responsable = jsonline_dictionary.get('misc_department_responsible', [])
+        self.classifications = dict()
+        for type_, code_ in zip(jsonline_dictionary.get('classifications_type', []),jsonline_dictionary.get('classifications_code', [])):
+            if type_ in self.classifications:
+                self.classifications[type_].append(code_)
+            else:
+                self.classifications[type_] = [code_]
+        self.state = None
+    def set_state(self, state):
+        assert state in ['accepted', 'rejected'], """State should be 'accepted' or 'rejected'"""
+        self.state = state
+    def get_content(self, key):
+        if key == 'misc_author':
+            return self.misc_author
+        elif key == 'classifications':
+            return self.classifications
+
+
+class EurlexClassifier:
+    def classify(self, eurlex_document:EurlexDocument):
+        for key, checker in self.checkers.items():
+            if checker.check(eurlex_document.get_content(key=key)):
+                return True
+            
+
+class Acceptor(EurlexClassifier):
+    def __init__(self):
+        self.checkers = {
+        'misc_author': MiscAuthorChecker(accepted_authors),
+        'classifications': ClassificationChecker(accepted_classifications)
+        }
+
+class Rejector(EurlexClassifier):
+    def __init__(self):
+        self.checkers = {
+        'misc_author': MiscAuthorChecker(rejected_authors),
+        }
+
 
 def bootstrap(input_dir, output_dir):
     '''
@@ -55,7 +104,8 @@ def bootstrap(input_dir, output_dir):
     It reads all .jsonl-files and creates a training set according to the business rules.
     It writes the output to a .tsv-file in the output_dir
     '''
-    pool = Pool()                     # Create a multiprocessing Pool
+
+    # pool = Pool()                     # Create a multiprocessing Pool
 
     os.makedirs(output_dir, exist_ok=True)
 
@@ -64,23 +114,25 @@ def bootstrap(input_dir, output_dir):
         raise Exception('A training file already exists in the output directory.')
 
     all_files = [os.path.join(input_dir, filename) for filename in os.listdir(input_dir) if filename.endswith('.jsonl')]
-    results = pool.map(parse_jsonlines, all_files)  # process files iterable with pool
+    results = map(parse_jsonlines, all_files)
+    # results = pool.map(parse_jsonlines, all_files)  # process files iterable with pool
 
     with open(training_set_output, 'w+') as output_file:
         output_file.writelines(f"{result}\n" for result in results if result is not None)
 
-    pool.close()    #close the multiprocessing pool
-    pool.join()
+    # pool.close()    #close the multiprocessing pool
+    # pool.join()
 
 def parse_jsonlines(path):
     with jsonlines.open(path) as reader:
         for obj in reader:
             if 'content' in obj:
                 if 'eurlex' in obj['website']:
-                    if addEurlexLabels(obj):
-                        #Each line here is training data as required by the train.py script.
-                        return addEurlexLabels(obj)
-            
+                    doc = EurlexDocument(obj)
+                    if Acceptor().classify(doc):
+                        print(f'accepted {path}')
+                    if Rejector().classify(doc):
+                        print(f'rejected {path}')
 
 def addEurlexLabels(dictionary):
     '''
@@ -124,16 +176,6 @@ def isAcceptedEurlex(dictionary):
         if 'FISMA' in dictionary['misc_department_responsible']:
             return True
 
-    elif 'classifications_type' in dictionary and 'classifications_code' in dictionary:
-        if isaccepted_code(dictionary, 'directory code', accepted_directory_codes):
-            return True
-        elif isaccepted_code(dictionary, 'eurovoc descriptor', accepted_eurovoc_descriptors):
-            return True
-        elif isaccepted_code(dictionary, 'subject matter', accepted_subject_matter):
-            return True
-        elif isaccepted_code(dictionary, 'summary code', accepted_summary_codes):
-            return True
-
 def isRejectedEurlex(dictionary):
     '''
     isRejectedEurlex() determines whether one of the codes is accepted.
@@ -156,9 +198,14 @@ def isaccepted_code(dictionary, classification_type, accepted_codes):
             return True
 
 if __name__ == "__main__":
+    '''
     parser = argparse.ArgumentParser()
     parser.add_argument("--input_dir", dest="input_dir", help="Location of the data export.", required=True)
     parser.add_argument("--output_dir", dest="output_dir", help="output directory (where the train data will be written to)", required=True)
     args = parser.parse_args()
 
     bootstrap(input_dir=args.input_dir, output_dir=args.output_dir)
+    '''
+    import tempfile
+    with tempfile.TemporaryDirectory() as d:
+        bootstrap(input_dir='/home/sandervanbeers/Desktop/DGFISMA/DATA_DUMP_13_08_ALL/EURLEX', output_dir=d)
