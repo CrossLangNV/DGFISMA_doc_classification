@@ -97,7 +97,7 @@ def addEurlexLabels(dictionary):
         encoded_doc = getText(dictionary)
         if encoded_doc:
             label=0
-            label_name='declined'
+            label_name='rejected'
             return f"{encoded_doc.decode()  }\t{ label_name }\t{label}"
         
 def getText(dictionary):

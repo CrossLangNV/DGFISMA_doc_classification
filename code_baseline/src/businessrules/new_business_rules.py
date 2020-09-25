@@ -6,8 +6,7 @@ from multiprocessing import Pool
 
 import jsonlines
 from langdetect import detect
-
-from checkers import MiscAuthorChecker, ClassificationChecker
+from checkers import MiscAuthorChecker, MiscDepartmentChecker, ClassificationChecker
 
 '''
 
@@ -40,6 +39,7 @@ accepted_classifications = {
     'summary codes': ['1409', '2414', '240403']
 }
 accepted_authors = ['Directorate-General for Financial Stability, Financial Services and Capital Markets Union']
+accepted_departments = []
 
 '''
 Directory codes:
@@ -51,13 +51,30 @@ Eurovoc descriptors:
 889     = State aid
 
 '''
-rejected_directory_codes = ['08', '117020', '09']
-rejected_eurovoc_descriptors = ['889']
+
+rejected_classifications = {
+    'directory code': ['08', '117020', '09'],
+    'eurovoc descriptor': ['889'],
+    'subject matter': [],
+    'summary codes': []
+}
 rejected_authors = []
-rejected_subject_matter = []
+rejected_departments = []
+
+
 
 class EurlexDocument:
+    """Representation of the Eurlex document
+    """
     def __init__(self, jsonline_dictionary):
+        """Contstructs an EurlexDocument object from a dictionary obtained through jsonline.
+
+        :param jsonline_dictionary: Eurlex document from jsonline string
+        :type jsonline_dictionary: dict
+        """
+        self.content = jsonline_dictionary.get('content', '')
+        if isinstance(self.content, list):
+            self.content = self.content[0]
         self.misc_author = jsonline_dictionary.get('misc_author', [])
         self.misc_department_responsable = jsonline_dictionary.get('misc_department_responsible', [])
         self.classifications = dict()
@@ -66,15 +83,31 @@ class EurlexDocument:
                 self.classifications[type_].append(code_)
             else:
                 self.classifications[type_] = [code_]
-        self.state = None
+        self.acceptance_state = 'unvalidated'
+
     def set_state(self, state):
         assert state in ['accepted', 'rejected'], """State should be 'accepted' or 'rejected'"""
-        self.state = state
+        self.acceptance_state = state
+    
     def get_content(self, key):
         if key == 'misc_author':
             return self.misc_author
+        elif key == 'misc_department_responsible':
+            return self.misc_department_responsable
         elif key == 'classifications':
             return self.classifications
+
+    def get_label(self):
+        document = ' '.join(self.content.split())
+        encoded_doc = b64encode(document.encode())
+        if self.acceptance_state == 'accepted':
+            label = 1
+            label_name = 'accepted'
+            return f"{encoded_doc.decode()  }\t{ label_name }\t{label}"
+        if self.acceptance_state == 'rejected':
+            label = 0
+            label_name = 'rejected'
+            return f"{encoded_doc.decode()  }\t{ label_name }\t{label}"
 
 
 class EurlexClassifier:
@@ -88,14 +121,18 @@ class Acceptor(EurlexClassifier):
     def __init__(self):
         self.checkers = {
         'misc_author': MiscAuthorChecker(accepted_authors),
-        'classifications': ClassificationChecker(accepted_classifications)
+        'misc_department_responsible': MiscDepartmentChecker(accepted_departments),
+        'classifications': ClassificationChecker(accepted_classifications),
         }
 
 class Rejector(EurlexClassifier):
     def __init__(self):
         self.checkers = {
         'misc_author': MiscAuthorChecker(rejected_authors),
+        'misc_department_responsible': MiscDepartmentChecker(rejected_departments),
+        'classifications': ClassificationChecker(rejected_classifications),
         }
+
 
 
 def bootstrap(input_dir, output_dir):
@@ -105,7 +142,7 @@ def bootstrap(input_dir, output_dir):
     It writes the output to a .tsv-file in the output_dir
     '''
 
-    # pool = Pool()                     # Create a multiprocessing Pool
+    pool = Pool()                     # Create a multiprocessing Pool
 
     os.makedirs(output_dir, exist_ok=True)
 
@@ -114,14 +151,15 @@ def bootstrap(input_dir, output_dir):
         raise Exception('A training file already exists in the output directory.')
 
     all_files = [os.path.join(input_dir, filename) for filename in os.listdir(input_dir) if filename.endswith('.jsonl')]
-    results = map(parse_jsonlines, all_files)
-    # results = pool.map(parse_jsonlines, all_files)  # process files iterable with pool
+    results = pool.map(parse_jsonlines, all_files)  # process files iterable with pool
+
+
 
     with open(training_set_output, 'w+') as output_file:
         output_file.writelines(f"{result}\n" for result in results if result is not None)
 
-    # pool.close()    #close the multiprocessing pool
-    # pool.join()
+    pool.close()    #close the multiprocessing pool
+    pool.join()
 
 def parse_jsonlines(path):
     with jsonlines.open(path) as reader:
@@ -129,83 +167,23 @@ def parse_jsonlines(path):
             if 'content' in obj:
                 if 'eurlex' in obj['website']:
                     doc = EurlexDocument(obj)
-                    if Acceptor().classify(doc):
-                        print(f'accepted {path}')
-                    if Rejector().classify(doc):
-                        print(f'rejected {path}')
-
-def addEurlexLabels(dictionary):
-    '''
-    This function takes in a dictionary loaded from json and creates labels according to the Eurlex business rules. It will return 'None' if neither.
-    '''
-    if isAcceptedEurlex(dictionary):
-        encoded_doc = getText(dictionary)
-        if encoded_doc:
-            label=1
-            label_name='accepted'
-            return f"{encoded_doc.decode()  }\t{ label_name }\t{label}"
-
-    elif isRejectedEurlex(dictionary):
-        encoded_doc = getText(dictionary)
-        if encoded_doc:
-            label=0
-            label_name='declined'
-            return f"{encoded_doc.decode()  }\t{ label_name }\t{label}"
-        
-def getText(dictionary):
-    '''
-    Takes in a dictionary (loaded from json) and returns a base64 encoded string from the 'content'-key.
-    '''
-    content = dictionary['content']
-    if isinstance(content, list):
-        content = content[0]
-    document = ' '.join(content.split())
-    if detect(document) == 'en':
-        encoded_document = b64encode(document.encode())
-        return encoded_document
-
-def isAcceptedEurlex(dictionary):
-    '''
-    isAcceptedEurlex() determines whether one of the codes is accepted.
-    '''
-    if 'misc_author' in dictionary:
-        if 'Directorate-General for Financial Stability, Financial Services and Capital Markets Union' in dictionary['misc_author']:
-            return True
-
-    if 'misc_department_responsible' in dictionary:
-        if 'FISMA' in dictionary['misc_department_responsible']:
-            return True
-
-def isRejectedEurlex(dictionary):
-    '''
-    isRejectedEurlex() determines whether one of the codes is accepted.
-    '''
-    if 'classifications_type' in dictionary and 'classifications_code' in dictionary:
-        if isaccepted_code(dictionary, 'directory code', rejected_directory_codes):
-            return True
-        elif isaccepted_code(dictionary, 'eurovoc descriptor', rejected_eurovoc_descriptors):
-            return True
-        elif isaccepted_code(dictionary, 'subject matter', rejected_subject_matter):
-            return True
-
-def isaccepted_code(dictionary, classification_type, accepted_codes):
-    #This functions checks whether any of the classification codes of a certain type start with any of the accepted (or rejected) codes. It expects the dictionary object, the classification type and a list of the accepted codes.
-    code_indices = [i for i, x in enumerate(dictionary['classifications_type']) if x == classification_type]
-    if code_indices:
-        all_codes = [dictionary['classifications_code'][index] for index in code_indices]
-        matches = [code for code, accepted_code in product(all_codes, accepted_codes) if code.startswith(accepted_code)]
-        if matches:
-            return True
+                    if acceptor.classify(doc):
+                        doc.set_state('accepted')
+                    if rejector.classify(doc):
+                        doc.set_state('rejected')
+                    label = doc.get_label()
+                    return label
 
 if __name__ == "__main__":
-    '''
+    import timeit
+    start = timeit.default_timer()
     parser = argparse.ArgumentParser()
     parser.add_argument("--input_dir", dest="input_dir", help="Location of the data export.", required=True)
     parser.add_argument("--output_dir", dest="output_dir", help="output directory (where the train data will be written to)", required=True)
     args = parser.parse_args()
 
+    acceptor = Acceptor()
+    rejector = Rejector()
     bootstrap(input_dir=args.input_dir, output_dir=args.output_dir)
-    '''
-    import tempfile
-    with tempfile.TemporaryDirectory() as d:
-        bootstrap(input_dir='/home/sandervanbeers/Desktop/DGFISMA/DATA_DUMP_13_08_ALL/EURLEX', output_dir=d)
+    stop = timeit.default_timer()
+    print('Time: ', stop - start) 

@@ -40,64 +40,66 @@ class MiscAuthorChecker(Checker):
         if set_authors.intersection(self.authors):
             return True
 
-class MiscDepartmentResponsibleChecker(Checker):
-    def __init__(self, department_responsible):
-        self.department_responsible = department_responsible
+class MiscDepartmentChecker(Checker):
+    """Class to check Eurlex departments responsible
 
-    def check(self, department_responsible):
-        return self.department_responsible == department_responsible
+    :param Checker: Base class it inherits from
+    :type Checker: Checker base class
+    """
+    def __init__(self, list_departments):
+        """construct the class with the list of departments it needs to perform a check against.
 
-    def get_content(self, dictionary):
-        return dictionary['misc_department_responsable']
+        :param list_departments: list of accepted/rejected departments
+        :type list_departments: List
+        """
+        self.departments = set(list_departments)
+
+    def check(self, departments):
+        """Checks if any of the departments from the Eurlex document is in self.departments
+
+        :param departments: list of departments in the Eurlex document
+        :type departments: list
+        :return: True if any matches are found
+        :rtype: bool
+        """
+        if isinstance(departments, str):
+            departments = [departments]
+        set_departments = set(departments)
+        if set_departments.intersection(self.departments):
+            return True
+
 
 class ClassificationChecker(Checker):
+    """This class checks the classification parameters
+
+    :param Checker: The checker base class it inherits from
+    :type Checker: Checker base class
+    """
     def __init__(self, classication_dict):
+        """Contructs the classification checker with a dictionary containing the values it needs to check against.
+
+        :param classication_dict: dictionary containing the accepted/rejected parameters
+        :type classication_dict: dictionary
+        """
         self.classification_dict = classication_dict
+        
     def check(self, doc_classifications):
+        """Checks content of doc_classification dictionary against the configured classification_dict dictionary and returns True if a match is found.
+
+        :param doc_classifications: The classifications of the Eurlex document.
+        :type doc_classifications: dict
+        :return: True if a match is found
+        :rtype: bool
+        """
+        
         for key, doc_codes in doc_classifications.items():
             check_codes = self.classification_dict[key]
-            if key == 'directory code':
+            if key == 'directory code' or key == 'summary codes':
                 matches = [doc_code for doc_code, code in product(doc_codes, check_codes) if doc_code.startswith(code)]
                 if matches:
                     return True
-
-
-# class Classifier(abc.ABC):
-
-#     def check_dict(self, dictionary):
-
-#         for key in dictionary.keys():
-#             if key in self.general_checkers:
-#                 checker = self.general_checkers[key]
-
-#                 # TODO if checker a list is
-#                 #content = dictionary[key]
-
-#                 content = checker.get_content(dictionary)
-
-#                 b = checker.check(content)
-#                 if b:
-#                     return True
-
-#         t = dictionary['classifications_type']
-#         c = dictionary['classifications_code']
-#         for t_i, c_i in zip(t, c):
-#             for checker in self.accepted_checkers[t_i]:
-#                 b = checker.check(c_i)
-#                 if b: return True
-#         return 
-    
-
-# def directory_code_factory(codes: list):
-#     return [DirectoryCodeChecker(code) for code in codes]
-
-
-# class Acceptor(Classifier):
-#     def __init__(self):
-#         # self.accepted_checkers = {
-#         #     'directory code': directory_code_factory(['062020', '160', ]),
-#         #     'eurovec discriptor': None, # TODO
-#         # }
-
-#         self.general_checkers = {'misc_author': MiscAuthorChecker('this long author string'),
-#                                  'directory code': directory_code_factory(['062020', '160', ])}
+            elif key == 'eurovoc descriptor' or key == 'subject matter':
+                doc_codes = set(doc_codes)
+                check_codes = set(check_codes)
+                if doc_codes.intersection(check_codes):
+                    return True
