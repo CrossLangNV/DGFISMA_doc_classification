@@ -7,60 +7,8 @@ from multiprocessing import Pool
 import jsonlines
 from langdetect import detect
 from checkers import MiscAuthorChecker, MiscDepartmentChecker, ClassificationChecker
-
-'''
-
-Directory codes:
-062020  = Right of establishment and freedom to provide services / Sectoral application
-160     = General, financial and institutional matters / Financial and budgetary provisions
-1040    = Economic and monetary policy and free movement of capital / Free movement of capital
-1030    = Economic and monetary policy and free movement of capital / Economic policy
-
-Eurovoc descriptors:
-4838    = European Investment Bank
-5455    = European Central Bank
-5460	= European Bank for Reconstruction and Development
-5465    = Money laundering
-8434    = Counterfeiting
-
-Subject matter:
-BEI     = European Investment Bank
-BCE     = European Central Bank
-
-Summary codes:
-1409    = Economic and monetary affairs / Banking and financial services
-2414    = Internal market / Banking and finance
-240403  = Internal market / Single market for services / Financial services: insurance
-'''
-accepted_classifications = {
-    'directory code': ['062020', '0160', '1040', '1030'],
-    'eurovoc descriptor': ['4838', '5455', '5460', '5465', '8434'],
-    'subject matter': ['BEI', 'BCE'],
-    'summary codes': ['1409', '2414', '240403']
-}
-accepted_authors = ['Directorate-General for Financial Stability, Financial Services and Capital Markets Union']
-accepted_departments = []
-
-'''
-Directory codes:
-08      = Competition policy
-09      = Taxation
-117020  = External relations / Development policy / Aid to developing countries
-
-Eurovoc descriptors:
-889     = State aid
-
-'''
-
-rejected_classifications = {
-    'directory code': ['08', '117020', '09'],
-    'eurovoc descriptor': ['889'],
-    'subject matter': [],
-    'summary codes': []
-}
-rejected_authors = []
-rejected_departments = []
-
+from conf import accepted_authors, accepted_classifications, accepted_departments
+from conf import rejected_authors, rejected_classifications, rejected_departments
 
 
 class EurlexDocument:
