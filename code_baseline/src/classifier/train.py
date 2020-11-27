@@ -161,7 +161,6 @@ def train(filename=conf.filename, output_dir=conf.output_dir, vectorizer_type=co
 if __name__ == "__main__":
     train()
 
-
 '''    
     parser = argparse.ArgumentParser()
     #Input-output:

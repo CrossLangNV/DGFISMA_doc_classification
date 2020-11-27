@@ -9,14 +9,13 @@ To download newsgroup data:
 This script will create the folder *DATA/newsgroup* and the files *train_data.tsv* and *test_data.tsv*, with at each line: *base64 encoded document* /t *target_name* /t *label*. 
 
 To train a classifier on the train data:
+First you have to modify conf.py: 
+filename = "/path/to/train_data.tsv"
+output_dir = "/path/of/output_folder"
 
-*python /train.py \
---filename DATA/newsgroup/train_data.tsv \
---output_dir  output_folder \
---vectorizer_type tfidf \
---feature_selection_svc*
+*python /train.py*
 
-This will create the *output_folder*, where the trained classfier will be saved (python pickle format). 
+This will create the *output_folder*, where the trained classfier will be saved (python pickle format). The cross validation scores will also be written to this output directory in json format.
 
 To evaluate the classifier on a labeled test set: 
 
