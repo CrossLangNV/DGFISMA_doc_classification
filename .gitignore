@@ -1,3 +1,13 @@
+#DATA
+DATA/
+DEPRECATED/
+MODELS/
+
+src/notebooks/*
+
+!src/notebooks/run_bootstrap.ipynb
+!src/notebooks/train_classifier.ipynb
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -3,59 +3,85 @@
 This repo contains the source code for the automatic classification and identification of retrieved documents.
 It also includes user scripts for the maintenance of the classification model.
 
-In code_baseline you'll find the most recent model trained on data extracted according to the business rules.
+In `src/app/models` you'll find the most recent model trained on data extracted according to the business rules.
 
-Instructions Business Rules
+Instructions Business Rules and creation of a train set.
 ------------
 
-code_baseline/src/businessrules contains the configurable user script for extracting training data from a solr export.
+`src/businessrules` contains the configurable user script for extracting training data from a solr export.
 
-The user script business_rules.py is used to bootstrap the training data for the document classifier. It starts from a solr export with files in jsonlines format. The business rules can be configured in conf.py.
+The user script business_rules.py is used to create the training data for the document classifier. It starts from a solr export with files in jsonlines format. The business rules can be configured in `src/businessrulesconf.py`.
 
-*python business_rules.py \
---input_dir directory/containing/solr/export \
---output_dir  output_directory/for/training_data.tsv*
+In order to create the training data, the following commands need to be run from a python console:
 
-The resulting training_data.tsv can be used to train the classifier model.
+```
+from businessrules.business_rules import bootstrap
 
+bootstrap( DATA_PATH , OUTPUT_PATH )
+```
+
+, with `DATA_PATH` the path to the directory containing the *solr* export in *.jsonl* format. The training data will be written to `OUTPUT_PATH/train_data.tsv`. This dataset can be used to train the model for document classification.
+
+`bootstrap` can also be run as a python script from a terminal.
 
 Instructions Classifier Model training
 ------------
 
-code_baseline/src/classifier contains the scripts needed to train a classifier model.
+`src/classifier` contains the scripts needed to train a model for document classification(TfIDF + support vector machines).
 
-Code to do document classification with Tfidf and support vector machines.
+In order to train a model, the following commands can be run from a python console:
 
-To download newsgroup data:
+```
+from classifier.train import train
 
-*python get_data_newsgroups.py --output_dir DATA/newsgroup*
+import configparser
 
-This script will create the folder *DATA/newsgroup* and the files *train_data.tsv* and *test_data.tsv*, with at each line: *base64 encoded document* /t *target_name* /t *label*. 
+CONFIG = configparser.ConfigParser()
+CONFIG.read( "src/classifier/train.config" )
 
-To train a classifier on the train data:
-First you have to modify conf.py: 
-filename = "/path/to/train_data.tsv"
-output_dir = "/path/of/output_folder"
+train( CONFIG  )
+```
 
-*python /train.py*
+`train` can also be run as a python script from a terminal.
 
-This will create the *output_folder*, where the trained classfier will be saved (python pickle format). The cross validation scores will also be written to this output directory in json format.
+We advise to use the following configuration for `train.config`:
+
+```
+[INPUT/OUTPUT]
+INPUT_FILE = OUTPUT_PATH/train_data.tsv
+OUTPUT_DIR = OUTPUT_DIR/MODELS/MODEL
+
+[TFIDF_PARAMETERS]
+LANGUAGE = english
+FEATURE_SELECTION_SVC = True
+PENALTY_FEATURE_SELECTION = l1
+THRESHOLD_FEATURE_SELECTION=1e-5
+PENALTY = l2
+DUAL = False
+REMOVE_PUNCTUATION_NUMBERS = True
+BALANCED = True
+JOBS = -1
+```
 
 To evaluate the classifier on a labeled test set: 
 
-*python test.py \
---filename DATA/newsgroup/test_data.tsv \
---model_path  output_folder/model.p \
---output_file output_folder/results*
+```
+python test.py \
+--filename test_data.tsv \
+--model_path  OUTPUT_DIR/MODELS/MODEL/model.p \
+--output_file output_folder/results
+```
 
-This will write the predicted labels to the *results* file in the output directory.  
+, with *test_data.tsv* a tab separated file with at each line: *base64_encoded_document \t label_description \t label*. This will write the predicted labels to the *results* file in the output directory, and print a classification report to the screen.
 
 To use the classfier on new data (unlabeled, base64):
 
-*python /predict.py \
---filename DATA/newsgroup/test_data \
---model_path  output_folder/model.p \
+```
+python /predict.py \
+--filename test_data \
+--model_path  OUTPUT_DIR/MODELS/MODEL/model.p \
 --output_file output_folder/results_predict*
+```
 
 with *test_data* a plain file with at each line a base64 encoded document.
 
@@ -63,7 +89,7 @@ with *test_data* a plain file with at each line a base64 encoded document.
 Instructions Classifier API
 ------------
 
-The source code can be found at code_baseline/src/app.
+The source code can be found at `src/app`.
 
 use the shell script "dbuild.sh" to build the docker image <br />
 
@@ -81,6 +107,6 @@ Given a document (json), e.g.: https://github.com/ArneDefauw/DGFISMA/blob/master
 <br />
 <br />
 
-If you want to update the model with a newly trained model, make sure to copy it to the /src/app/models directory. Running dbuild.sh will then create a docker API with your new classifier model.
+If you want to update the model with a newly trained model, make sure to copy it to the `/src/app/models` directory. Running dbuild.sh will then create a docker API with your new classifier model.
 
 Running dcli.sh will start the classifier API.
