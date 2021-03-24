@@ -24,6 +24,8 @@ bootstrap( DATA_PATH , OUTPUT_PATH )
 
 `bootstrap` can also be run as a python script from a terminal.
 
+We also refer to the the notebook *src/notebooks/run_bootstrap.ipynb* for an example on how to run the *bootstrap* script.
+
 Instructions Classifier Model training
 ------------
 
@@ -85,6 +87,7 @@ python /predict.py \
 
 with *test_data* a plain file with at each line a base64 encoded document.
 
+We also refer to *src/notebooks/train_classifier.ipynb* for an example on how to run the *train* and *evaluation* scripts. 
 
 Instructions Classifier API
 ------------
