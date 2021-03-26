@@ -37,7 +37,6 @@ class EurlexDocument:
             else:
                 self.classifications_name[type_] = [code_]          
                 
-                
         self.acceptance_state = 'unvalidated'
 
     def set_state(self, state):

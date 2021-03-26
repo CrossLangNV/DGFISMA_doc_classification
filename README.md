@@ -89,6 +89,19 @@ with *test_data* a plain file with at each line a base64 encoded document.
 
 We also refer to *src/notebooks/train_classifier.ipynb* for an example on how to run the *train* and *evaluation* scripts. 
 
+
+Data
+------------
+
+We provide the training data on which the model is trained in . The file *train_data.tsv* is the training data obtained using the business rules. It is a tab separated file with at each line: *base64_encoded_document \t label_description \t label*. *train_data_milieu.tsv* is training data in the same format obtained via a solr dump from the catalogue manager after a human evaluation by Milieu (i.e. export of the documents from solr and the acceptance states). We trained the classifier on a concatenation of these two files ( i.e. via command line: `cat train_data.tsv train_data_milieu.tsv > train_data_all.tsv` ). The file *test_data_milieu.tsv* is a test set created by Milieu.
+
+statistics training and test corpora |  nr of accepted docs | nr of rejected docs  
+--- |  --- | --- 
+*train_data.tsv* |  4068 | 8531  
+*train_data_milieu.tsv* |  205 | 438 
+*test_data_milieu.tsv* | 73  | 44
+
+
 Instructions Classifier API
 ------------
 
