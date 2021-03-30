@@ -1,6 +1,5 @@
 # DGFISMA Document Classifier
 
-fd
 This repo contains the source code for the automatic classification and identification of retrieved documents.
 It also includes user scripts for the maintenance of the classification model.
 
@@ -128,6 +127,6 @@ Given a document (json), e.g.: *example.json* , the API will return a json conta
 <br />
 <br />
 
-If you want to update the model with a newly trained model, make sure to copy the *model.p* file it to the `/src/app/models` directory. Running dbuild.sh will then create a docker API with your new classifier model.
+If you want to update the model with a newly trained model, make sure to copy the *model.p* file into the `/src/app/models` directory. Running dbuild.sh will then create a docker API with your new classifier model.
 
 Running dcli.sh will start the classifier API.
