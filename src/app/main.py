@@ -7,6 +7,8 @@ from typing import Optional
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
+import string
+
 path_model = "/models/model.p"
 
 model = pickle.load( open( path_model, "rb"))
