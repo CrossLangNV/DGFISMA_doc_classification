@@ -19,6 +19,9 @@ class EurlexDocument:
         :type jsonline_dictionary: dict
         """
         self.content = jsonline_dictionary.get('content', '')
+        self.celex_id=jsonline_dictionary.get( 'celex', '' )
+        if isinstance(self.celex_id, list):
+            self.celex_id = self.celex_id[0]
         if isinstance(self.content, list):
             self.content = self.content[0]
         self.misc_author = jsonline_dictionary.get('misc_author', [])
@@ -55,15 +58,17 @@ class EurlexDocument:
 
     def get_label(self):
         document = ' '.join(self.content.split())
+        celex_id=self.celex_id
         encoded_doc = b64encode(document.encode())
         if self.acceptance_state == 'accepted':
             label = 1
             label_name = 'accepted'
-            return f"{encoded_doc.decode()  }\t{ label_name }\t{label}"
+            return f"{encoded_doc.decode()  }\t{ label_name }\t{label}\t{celex_id}"
+
         if self.acceptance_state == 'rejected':
             label = 0
             label_name = 'rejected'
-            return f"{encoded_doc.decode()  }\t{ label_name }\t{label}"
+            return f"{encoded_doc.decode()  }\t{ label_name }\t{label}\t{celex_id}"
         
         
 def classify( eurlex_doc: EurlexDocument ):
